@@ -7,7 +7,7 @@
 
 Dockerized [isync](https://sourceforge.net/projects/isync/).
 
-`isync` syncs IMAP as a Maildir (emails as individual files), in contrast to [imap-backup]( https://github.com/theohbrothers/docker-imap-backup) which syncs IMAP as `.mbox` backup files.
+isync syncs IMAP as a ``Maildir`` (emails as individual files), in contrast to [imap-backup]( https://github.com/theohbrothers/docker-imap-backup) which syncs IMAP as ``.mbox`` backup files.
 
 ## Tags
 
@@ -36,9 +36,9 @@ $(
 
 > Note: ``isync`` the project name, ``mbsync`` is the tool
 
-See the following docker-compose examples:
+See the following ``docker-compose`` examples:
 
-- [Cron-based sync using crond](docs/examples/cron)
+- [Cron-based sync using ``crond``](docs/examples/cron)
 - [Demo sync](docs/examples/demo)
 
 ``````sh
