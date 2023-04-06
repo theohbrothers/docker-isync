@@ -1,0 +1,30 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Generate-DockerImageVariants",
+            "type": "process",
+            "command": "pwsh",
+            "args": [
+                "-c",
+                "Generate-DockerImageVariants ."
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Install DockerImageVariants module",
+            "type": "process",
+            "command": "pwsh",
+            "args": [
+                "-c",
+                "Install-Module -Name Generate-DockerImageVariants -Repository PSGallery -Scope CurrentUser -Force -Verbose"
+            ],
+            "group": "build"
+        }
+    ]
+}
