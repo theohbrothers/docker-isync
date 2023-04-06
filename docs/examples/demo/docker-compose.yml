@@ -1,0 +1,147 @@
+version: '2.2'
+services:
+  # Generate self-signed certs
+  # See: https://docker-mailserver.github.io/docker-mailserver/latest/config/security/ssl/#self-signed-certificates
+  step-ca:
+    image: smallstep/step-ca:latest
+    working_dir: /certs
+    volumes:
+      - certs:/certs
+    entrypoint:
+      - /bin/sh
+    user: 0:0
+    command:
+      - -c
+      - |
+          set -eu
+          if [ ! -d demoCA ]; then
+              mkdir -p demoCA
+
+              step certificate create "Smallstep Root CA" "demoCA/cacert.pem" "demoCA/cakey.pem" \
+                --no-password --insecure \
+                --profile root-ca \
+                --not-before "2021-01-01T00:00:00+00:00" \
+                --not-after "2031-01-01T00:00:00+00:00" \
+                --san "example.com" \
+                --san "mail.example.com" \
+                --kty RSA --size 2048
+
+              step certificate create "Smallstep Leaf" mail.example.com-cert.pem mail.example.com-key.pem \
+                --no-password --insecure \
+                --profile leaf \
+                --ca "demoCA/cacert.pem" \
+                --ca-key "demoCA/cakey.pem" \
+                --not-before "2021-01-01T00:00:00+00:00" \
+                --not-after "2031-01-01T00:00:00+00:00" \
+                --san "example.com" \
+                --san "mail.example.com" \
+                --kty RSA --size 2048
+          fi
+
+  # Mail server
+  # See: https://docker-mailserver.github.io/docker-mailserver/latest
+  docker-mailserver:
+    image: docker.io/mailserver/docker-mailserver:latest
+    domainname: example.com
+    environment:
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_FAIL2BAN=0
+      - ENABLE_POSTGREY=0
+      - ENABLE_MANAGESIEVE=1
+      - ONE_DIR=1
+      - DMS_DEBUG=0
+      - POSTFIX_INET_PROTOCOLS=ipv4
+      - DOVECOT_INET_PROTOCOLS=ipv4
+      - SSL_TYPE=manual
+      - SSL_CERT_PATH=/certs/mail.example.com-cert.pem
+      - SSL_KEY_PATH=/certs/mail.example.com-key.pem
+    volumes:
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - certs/:/certs/
+    networks:
+      default:
+        aliases:
+          - example.com
+          - mail.example.com
+          - imap.example.com
+          - smtp.example.com
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    depends_on:
+      - step-ca
+
+  snappymail:
+    image: leojonathanoh/snappymail:pr-1
+    ports:
+      - 8888:8888
+    volumes:
+      - snappymail:/var/lib/snappymail
+    networks:
+      - default
+
+  isync:
+    image: theohbrothers/docker-isync:1.4.4
+    volumes:
+      - mail:/mail
+    networks:
+      - default
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          echo "Get self-signed certificate"
+          mbsync-get-cert imap.example.com > /imap.example.com.pem
+
+          echo "Creating /.mbsyncrc"
+          cat - > /.mbsyncrc <<'EOF'
+          # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
+          # See: https://wiki.archlinux.org/title/Isync
+          IMAPAccount example
+          Host imap.example.com
+          User test@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Trust our self-signed certificate(s). In production, this may not be needed.
+          CertificateFile /imap.example.com.pem
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          IMAPStore example-remote
+          Account example
+
+          MaildirStore example-local
+          SubFolders Verbatim
+          # The trailing '/' is important
+          Path /mail/
+          Inbox /mail
+
+          Channel example
+          Far :example-remote:
+          Near :example-local:
+          Patterns *
+          Create Near
+          Expunge Near
+          SyncState *
+          Sync Pull
+          EOF
+
+          echo "Sleeping forever"
+          exec sleep infinity
+
+networks:
+  default:
+
+volumes:
+  certs:
+  maildata:
+  mailstate:
+  snappymail:
+  mail:
