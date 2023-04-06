@@ -1,0 +1,61 @@
+version: '2'
+services:
+  isync:
+    image: theohbrothers/docker-isync:1.4.4
+    volumes:
+      - mail:/mail
+    networks:
+      - default
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          echo "Creating /.mbsyncrc"
+          cat - > /.mbsyncrc <<'EOF'
+          # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
+          # See: https://wiki.archlinux.org/title/Isync
+          IMAPAccount example
+          Host imap.example.com
+          User test@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          IMAPStore example-remote
+          Account example
+
+          MaildirStore example-local
+          SubFolders Verbatim
+          # The trailing '/' is important
+          Path /mail/
+          Inbox /mail
+
+          Channel example
+          Far :example-remote:
+          Near :example-local:
+          Patterns *
+          Create Near
+          Expunge Near
+          SyncState *
+          Sync Pull
+          EOF
+
+          # Run at 00:00 daily. To customize your cron schedule, use https://crontab.guru
+          crontab - <<'EOF'
+          0 0 * * * mbsync --config /.mbsyncrc --all --verbose
+          EOF
+
+          echo "Running crond"
+          exec crond -f
+
+networks:
+  default:
+
+volumes:
+  mail:
