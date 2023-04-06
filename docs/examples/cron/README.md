@@ -20,7 +20,7 @@ View `/.mbsyncrc` config:
 docker-compose exec isync cat /.mbsyncrc
 ```
 
-To run the first-time backup:
+To run the first-time sync:
 
 ```sh
 docker-compose exec isync mbsync --config /.mbsyncrc --all --verbose
@@ -28,9 +28,9 @@ docker-compose exec isync mbsync --config /.mbsyncrc --all --verbose
 
 Now, wait out for `00:00` of tomorrow.
 
-At `00:00`, your incremental backup would have run very quickly.
+At `00:00`, your incremental sync would have run very quickly.
 
-List backup files:
+List synced files:
 
 ```sh
 docker-compose exec isync ls -alR /mail

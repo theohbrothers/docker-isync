@@ -89,13 +89,13 @@ View `/.mbsyncrc` config:
 docker-compose exec isync cat /.mbsyncrc
 ```
 
-Now, run the backup (should take only 1 second):
+Now, run the sync (should take only 1 second):
 
 ```sh
 docker-compose exec isync mbsync --config /.mbsyncrc --all --verbose
 ```
 
-List backup files:
+List synced files:
 
 ```sh
 docker-compose exec isync ls -alR /mail
