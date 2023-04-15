@@ -42,7 +42,7 @@ services:
   # See: https://docker-mailserver.github.io/docker-mailserver/latest
   docker-mailserver:
     image: docker.io/mailserver/docker-mailserver:latest
-    domainname: example.com
+    domainname: mail.example.com
     environment:
       - ENABLE_SPAMASSASSIN=0
       - ENABLE_CLAMAV=0
@@ -57,9 +57,11 @@ services:
       - SSL_CERT_PATH=/certs/mail.example.com-cert.pem
       - SSL_KEY_PATH=/certs/mail.example.com-key.pem
     volumes:
-      - maildata:/var/mail
-      - mailstate:/var/mail-state
       - certs/:/certs/
+      - dms-mail-data:/var/mail
+      - dms-mail-state:/var/mail-state
+      - dms-mail-logs/:/var/log/mail/
+      - dms-config/:/tmp/docker-mailserver/
     networks:
       default:
         aliases:
@@ -67,9 +69,6 @@ services:
           - mail.example.com
           - imap.example.com
           - smtp.example.com
-    cap_add:
-      - NET_ADMIN
-      - SYS_PTRACE
     depends_on:
       - step-ca
 
@@ -82,12 +81,14 @@ services:
     networks:
       - default
 
-  isync:
+  isync-imap-to-maildir:
     image: theohbrothers/docker-isync:1.4.4
     volumes:
       - mail:/mail
     networks:
       - default
+    depends_on:
+      - docker-mailserver
     stop_signal: SIGKILL
     entrypoint:
       - /bin/sh
@@ -96,14 +97,13 @@ services:
       - |
           set -eu
 
-          echo "Get self-signed certificate"
+          while ! nc -w 1 -vz imap.example.com 993; do echo "Waiting for docker-mailserver to be up"; sleep 3; done
+
+          echo "Getting self-signed certificate"
           mbsync-get-cert imap.example.com > /imap.example.com.pem
 
           echo "Creating /mbsyncrc"
           cat - > /mbsyncrc <<'EOF'
-          # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
-          # See: https://wiki.archlinux.org/title/Isync
-          # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
           IMAPStore example-remote
           Host imap.example.com
           User test@example.com
@@ -134,12 +134,127 @@ services:
           echo "Sleeping forever"
           exec sleep infinity
 
+  isync-maildir-to-imap:
+    image: theohbrothers/docker-isync:1.4.4
+    volumes:
+      - mail2:/mail
+    networks:
+      - default
+    depends_on:
+      - docker-mailserver
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          while ! nc -w 1 -vz imap.example.com 993; do echo "Waiting for docker-mailserver to be up"; sleep 3; done
+
+          echo "Getting self-signed certificate"
+          mbsync-get-cert imap.example.com > /imap.example.com.pem
+
+          echo "Creating /mbsyncrc"
+          cat - > /mbsyncrc <<'EOF'
+          IMAPStore example-remote-2
+          Host imap.example.com
+          User test2@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Trust our self-signed certificate(s). In production, this may not be needed.
+          CertificateFile /imap.example.com.pem
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          MaildirStore example-local
+          SubFolders Verbatim
+          # The trailing '/' is important for Path
+          Path /mail/
+          Inbox /mail/INBOX
+
+          Channel example
+          Far :example-remote-2:
+          Near :example-local:
+          Patterns *
+          Create Far
+          Expunge Far
+          SyncState *
+          Sync Push
+          EOF
+
+          echo "Sleeping forever"
+          exec sleep infinity
+
+  isync-imap-to-imap:
+    image: theohbrothers/docker-isync:1.4.4
+    volumes:
+      - mbsync:/mbsync # Sync state
+    networks:
+      - default
+    depends_on:
+      - docker-mailserver
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          while ! nc -w 1 -vz imap.example.com 993; do echo "Waiting for docker-mailserver to be up"; sleep 3; done
+
+          echo "Getting self-signed certificate"
+          mbsync-get-cert imap.example.com > /imap.example.com.pem
+
+          echo "Creating /mbsyncrc"
+          cat - > /mbsyncrc <<'EOF'
+          IMAPStore example-remote
+          Host imap.example.com
+          User test@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Trust our self-signed certificate(s). In production, this may not be needed.
+          CertificateFile /imap.example.com.pem
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          IMAPStore example-remote-3
+          Host imap.example.com
+          User test3@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Trust our self-signed certificate(s). In production, this may not be needed.
+          CertificateFile /imap.example.com.pem
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          Channel example
+          Far :example-remote:
+          Near :example-remote-3:
+          Patterns *
+          Create Near
+          Expunge Near
+          SyncState /mbsync/
+          Sync Pull
+          EOF
+
+          echo "Sleeping forever"
+          exec sleep infinity
+
 networks:
   default:
 
 volumes:
   certs:
-  maildata:
-  mailstate:
+  dms-mail-data:
+  dms-mail-state:
+  dms-mail-logs:
+  dms-config:
   snappymail:
   mail:
+  mail2:
+  mbsync:

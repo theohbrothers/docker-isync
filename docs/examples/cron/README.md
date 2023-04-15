@@ -1,6 +1,6 @@
-# Cron-based example
+# Cron
 
-## Usage
+This demo shows how to setup a cron-based sync.
 
 Start the container:
 
@@ -10,7 +10,7 @@ docker-compose up
 
 At entrypoint:
 
-- `/mbsyncrc` is created for account `test@example.com`
+- `/mbsyncrc` config file is created
 - A crontab is created that runs `mbsync` daily at `00:00`
 - `crond` is started
 
@@ -20,7 +20,7 @@ View `/mbsyncrc` config:
 docker-compose exec isync cat /mbsyncrc
 ```
 
-To run the first-time sync:
+Run the first-time sync:
 
 ```sh
 docker-compose exec isync /sync
