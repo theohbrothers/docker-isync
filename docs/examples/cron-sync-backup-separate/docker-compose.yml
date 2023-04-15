@@ -60,7 +60,7 @@ services:
           exec crond -f
 
   restic:
-    image: restic/restic:0.15.1
+    image: theohbrothers/docker-isync:1.4.4-restic
     environment:
       - RESTIC_REPOSITORY=/backup
       - RESTIC_PASSWORD=test

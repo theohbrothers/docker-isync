@@ -15,19 +15,19 @@ All images contain `curl` and `jq`, which are useful for sending notifications i
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
 | `:1.4.4`, `:latest` | [View](variants/1.4.4) |
+| `:1.4.4-pingme` | [View](variants/1.4.4-pingme) |
 | `:1.4.4-restic` | [View](variants/1.4.4-restic) |
+| `:1.4.4-restic-pingme` | [View](variants/1.4.4-restic-pingme) |
 
-- `restic`: Includes [`restic`](https://github.com/restic/restic). This is useful for [cron-based backups](#cron).
+- `restic`: Includes [`restic`](https://github.com/restic/restic). Useful for [cron-based backups](#cron-and-notifications).
+- `pingme`: Includes [`pingme`](https://github.com/kha7iq/pingme). Useful for sending notifications to [well-known services](https://pingme.lmno.pk/#/services).
+  - Note: `pingme` images has fewer architectures than non-`pingme` variants. More architectures will be added.
 
 ## Usage
 
-> Note: `isync` the project name, `mbsync` is the tool
+> Note: `isync` the project name, `mbsync` is the tool.
 
-The config file used in this image is `/mbsyncrc`.
-
-The volume used to store local Maildir is `/mail`.
-
-The main sync script is `/sync`.
+The `mbsync` config file used in this image is `/mbsyncrc`. The volume used to store local Maildir is `/mail`. The main sync script is `/sync`.
 
 Here are three common sync cases:
 
@@ -35,9 +35,11 @@ Here are three common sync cases:
 - [Maildir to IMAP](#maildir-to-imap) - One-way sync of local Maildir to IMAP server
 - [IMAP to IMAP](#imap-to-imap) - One-way sync of IMAP server to another IMAP server
 
-For cron-based examples, see [below](#cron).
+For cron-based examples, see [below](#cron-and-notifications).
 
 For a simple demo of the three sync cases, see this `docker-compose` [demo](docs/examples/demo).
+
+If needed, see [official docs](https://isync.sourceforge.io/).
 
 ### IMAP to Maildir
 
@@ -159,13 +161,14 @@ Sync:
 docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mbsync:/mbsync theohbrothers/docker-isync:latest
 ```
 
-### Cron
+### Cron and notifications
 
-For cron-based sync and cron-based backup with notifications, see `docker-compose` example(s):
+For cron-based sync and backup with notifications, see `docker-compose` example(s):
 
-- [Cron-based sync with notifications](docs/examples/cron-sync)
-- [Cron-based sync and backup with notifications in the same container](docs/examples/cron-sync-backup)
-- [Cron-based sync and backup with notifications in separate containers](docs/examples/cron-sync-backup-separate)
+- [Cron-based sync with curl notifications](docs/examples/cron-sync)
+- [Cron-based sync with pingme notifications](docs/examples/cron-sync-pingme)
+- [Cron-based sync and backup (same container) with curl notifications](docs/examples/cron-sync-backup)
+- [Cron-based sync and backup (separate containers) with curl notifications](docs/examples/cron-sync-backup-separate)
 
 ### Command line usage
 
