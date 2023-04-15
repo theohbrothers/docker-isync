@@ -35,6 +35,7 @@ RUN set -eux; \
     wget -q https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/SHA256SUMS; \
     SHA=$( sha256sum "$FILE" ); \
     cat SHA256SUMS | grep "$FILE" | sha256sum -c -; \
+    rm -f SHA256SUMS; \
     bzip2 -d "$FILE"; \
     mv restic_${RESTIC_VERSION}_${TARGETOS}_${TARGETARCH} /usr/local/bin/restic; \
     chmod +x /usr/local/bin/restic; \
