@@ -99,8 +99,8 @@ services:
           echo "Get self-signed certificate"
           mbsync-get-cert imap.example.com > /imap.example.com.pem
 
-          echo "Creating /.mbsyncrc"
-          cat - > /.mbsyncrc <<'EOF'
+          echo "Creating /mbsyncrc"
+          cat - > /mbsyncrc <<'EOF'
           # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
           # See: https://wiki.archlinux.org/title/Isync
           # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
@@ -117,7 +117,7 @@ services:
 
           MaildirStore example-local
           SubFolders Verbatim
-          # The trailing '/' is important
+          # The trailing '/' is important for Path
           Path /mail/
           Inbox /mail/INBOX
 
