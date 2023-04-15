@@ -53,6 +53,9 @@ RUN set -eux; \
 }
 
 @"
+# Install notification tools
+RUN apk add --no-cache curl jq
+
 # Install helper scripts
 COPY sync /sync
 RUN chmod +x /sync

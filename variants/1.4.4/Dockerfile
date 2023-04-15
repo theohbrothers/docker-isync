@@ -26,6 +26,9 @@ RUN set -eux; \
     apk add --no-cache openssl; \
     mbsync --version
 
+# Install notification tools
+RUN apk add --no-cache curl jq
+
 # Install helper scripts
 COPY sync /sync
 RUN chmod +x /sync

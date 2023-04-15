@@ -42,10 +42,17 @@ services:
           Sync Pull
           EOF
 
+          echo "Creating /notify.sh"
+          touch /notify.sh && chmod 700 /notify.sh
+          cat - > /notify.sh <<'EOF'
+          echo "Sending notification"
+          curl -o /dev/null -s -w "%{http_code}\n" -X POST https://example.com/?message=$${1:-empty}
+          EOF
+
           # Run at 00:00 daily. To customize the cron schedule, use https://crontab.guru
           echo "Creating crontab"
           crontab - <<'EOF'
-          0 0 * * * /sync
+          0 0 * * * /sync && /notify.sh sync-success|| /notify.sh sync-failed
           EOF
           crontab -l
 

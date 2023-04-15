@@ -40,6 +40,9 @@ RUN set -eux; \
     chmod +x /usr/local/bin/restic; \
     restic version | grep "^restic $RESTIC_VERSION";
 
+# Install notification tools
+RUN apk add --no-cache curl jq
+
 # Install helper scripts
 COPY sync /sync
 RUN chmod +x /sync

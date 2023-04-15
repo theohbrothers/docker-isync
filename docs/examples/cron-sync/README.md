@@ -11,7 +11,8 @@ docker-compose up
 `isync` service is now running:
 
 - `/mbsyncrc` config file is created
-- A crontab is created that runs sync daily at `00:00`
+- `/notify.sh` is created
+- A crontab is created that runs `/sync` and `/notify.sh` daily at `00:00`
 - `crond` is started
 
 ## 1. Perform first-time sync
@@ -22,7 +23,7 @@ View `/mbsyncrc` config:
 docker-compose exec isync cat /mbsyncrc
 ```
 
-Run a first-time sync:
+Run a first-time sync (this will fail, because `test@example.com` is not a real account):
 
 ```sh
 docker-compose exec isync /sync
