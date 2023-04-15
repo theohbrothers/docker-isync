@@ -33,7 +33,8 @@ RUN set -eux; \
 foreach ($c in $VARIANT['_metadata']['components']) {
     if ($c -eq 'restic') {
 @'
-# See: https://github.com/restic/restic/blob/0.15.1/docker/Dockerfile
+# Install restic
+# These packages are needed for all restic features to work. See: https://github.com/restic/restic/blob/0.15.1/docker/Dockerfile
 RUN apk add --update --no-cache ca-certificates fuse openssh-client tzdata jq
 RUN set -eux; \
     RESTIC_VERSION=0.15.1; \
