@@ -24,23 +24,20 @@ See the following `docker-compose` examples:
 - [Demo sync](docs/examples/demo)
 
 ```sh
-# Print command line usage
-docker run --rm -it theohbrothers/docker-isync:1.4.4 --help
-
 # Create a mbsync config of your IMAP and Maildir settings
 # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
 # See: https://wiki.archlinux.org/title/Isync
 # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
-touch .mbsyncrc
-vi .mbsyncrc
+touch mbsyncrc
+vi mbsyncrc
 
 # Sync
 docker run --rm -it \
-    -v $(pwd)/.mbsyncrc:/.mbsyncrc \
+    -v $(pwd)/mbsyncrc:/mbsyncrc \
     -v mail:/mail \
     theohbrothers/docker-isync:1.4.4
 
-# Help
+# Print command line usage
 docker run --rm -it theohbrothers/docker-isync:1.4.4 --help
 ```
 

@@ -10,14 +10,14 @@ docker-compose up
 
 At entrypoint:
 
-- `/.mbsyncrc` is created for account `test@example.com`
+- `/mbsyncrc` is created for account `test@example.com`
 - A crontab is created that runs `mbsync` daily at `00:00`
 - `crond` is started
 
-View `/.mbsyncrc` config:
+View `/mbsyncrc` config:
 
 ```sh
-docker-compose exec isync cat /.mbsyncrc
+docker-compose exec isync cat /mbsyncrc
 ```
 
 To run the first-time sync:

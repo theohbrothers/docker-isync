@@ -81,12 +81,12 @@ docker-compose exec isync cat /imap.example.com.pem
 docker-compose exec isync cat /imap.example.com.pem | openssl x509 -text
 ```
 
-`/.mbsyncrc` shoud have been created.
+`/mbsyncrc` shoud have been created.
 
-View `/.mbsyncrc` config:
+View `/mbsyncrc` config:
 
 ```sh
-docker-compose exec isync cat /.mbsyncrc
+docker-compose exec isync cat /mbsyncrc
 ```
 
 Now, run the sync (should take only 1 second):
