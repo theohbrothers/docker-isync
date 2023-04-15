@@ -33,7 +33,7 @@ docker-compose exec isync /sync
 
 Now, wait out for `00:00` of tomorrow.
 
-At `00:00`, the incremental sync would run very quickly. A notification of the cron status would be sent to `https://example.com` using `curl`.
+At `00:00`, the incremental sync would run very quickly. A notification of the cron status would be sent to Discord and Mattermost using `pingme`.
 
 List synced files:
 

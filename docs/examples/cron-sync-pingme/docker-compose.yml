@@ -1,0 +1,67 @@
+version: '2'
+services:
+  isync:
+    image: theohbrothers/docker-isync:1.4.4-pingme
+    volumes:
+      - mail:/mail
+    networks:
+      - default
+    restart: unless-stopped
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          echo "Creating /mbsyncrc"
+          cat - > /mbsyncrc <<'EOF'
+          IMAPStore example-remote
+          Host imap.example.com
+          User test@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          MaildirStore example-local
+          SubFolders Verbatim
+          # The trailing '/' is important for Path
+          Path /mail/
+          Inbox /mail/INBOX
+
+          Channel example
+          Far :example-remote:
+          Near :example-local:
+          Patterns *
+          Create Near
+          Expunge Near
+          SyncState *
+          Sync Pull
+          EOF
+
+          echo "Creating /notify.sh"
+          touch /notify.sh && chmod 700 /notify.sh
+          cat - > /notify.sh <<'EOF'
+          echo "Sending notification"
+          pingme discord --token '123' --channel '1234567890' --msg $${1:-empty}
+          pingme mattermost --token '123' --channel '12345,567' --url 'mattermost.example.com' --scheme 'https' --msg $${1:-empty}
+          EOF
+
+          # Run at 00:00 daily. To customize the cron schedule, use https://crontab.guru
+          echo "Creating crontab"
+          crontab - <<'EOF'
+          0 0 * * * /sync && /notify.sh sync-success|| /notify.sh sync-failed
+          EOF
+          crontab -l
+
+          echo "Running crond"
+          exec crond -f
+
+networks:
+  default:
+
+volumes:
+  mail:

@@ -69,7 +69,7 @@ snapshot c9ed53b0 saved
 
 Now, wait out for `00:00` of tomorrow.
 
-At `00:00`, the incremental sync and incremental backup would have run very quickly.
+At `00:00`, the incremental sync and incremental backup would run very quickly. A notification of the cron status would be sent to `https://example.com` using `curl`.
 
 List synced files:
 
@@ -83,7 +83,7 @@ List backup files:
 docker-compose exec isync find /backup
 ```
 
-## 5. Restore a backup
+## 4. Restore a backup
 
 If `/mail` is ever lost, `restic restore` can easily restore the data.
 

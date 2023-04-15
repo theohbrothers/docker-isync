@@ -75,7 +75,7 @@ snapshot c9ed53b0 saved
 
 Now, wait out for `00:00` of tomorrow.
 
-At `00:00`, the incremental sync would have run very quickly.
+At `00:00`, the incremental sync would run very quickly. A notification of the cron status would be sent to `https://example.com` using `curl`.
 
 List synced files:
 
@@ -87,7 +87,7 @@ docker-compose exec isync find /mail
 
 Now, wait out for `00:05` of tomorrow.
 
-At `00:05`, the `restic` incremental backup would have run very quickly.
+At `00:05`, the `restic` incremental backup would run very quickly. A notification of the cron status would be sent to `https://example.com`.
 
 List synced files:
 

@@ -8,7 +8,9 @@ $local:VARIANTS_MATRIX = @(
             package_version = $v
             subvariants = @(
                 @{ components = @() }
+                @{ components = @('pingme') }
                 @{ components = @('restic') }
+                @{ components = @('restic', 'pingme') }
             )
         }
     }
@@ -21,7 +23,13 @@ $VARIANTS = @(
                 # Metadata object
                 _metadata = @{
                     package_version = $variant['package_version']
-                    platforms = 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
+                    platforms = & {
+                        if ( $subVariant['components'] -contains 'pingme') {
+                            'linux/386,linux/amd64,linux/arm/v7,linux/arm64'
+                        }else {
+                            'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/s390x'
+                        }
+                    }
                     components = $subVariant['components']
                 }
                 # Docker image tag. E.g. '3.8-curl'
