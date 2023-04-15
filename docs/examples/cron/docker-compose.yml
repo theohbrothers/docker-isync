@@ -18,7 +18,8 @@ services:
           cat - > /.mbsyncrc <<'EOF'
           # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
           # See: https://wiki.archlinux.org/title/Isync
-          IMAPAccount example
+          # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
+          IMAPStore example-remote
           Host imap.example.com
           User test@example.com
           Pass test
@@ -27,14 +28,11 @@ services:
           # Limit the number of simultaneous IMAP commands
           PipelineDepth 30
 
-          IMAPStore example-remote
-          Account example
-
           MaildirStore example-local
           SubFolders Verbatim
           # The trailing '/' is important
           Path /mail/
-          Inbox /mail
+          Inbox /mail/INBOX
 
           Channel example
           Far :example-remote:
