@@ -32,7 +32,7 @@ $(
 )
 - ``restic``: Includes [``restic``](https://github.com/restic/restic). Useful for [cron-based backups](#cron-and-notifications).
 - ``pingme``: Includes [``pingme``](https://github.com/kha7iq/pingme). Useful for sending notifications to [well-known services](https://pingme.lmno.pk/#/services).
-  - Note: ``pingme`` images has fewer architectures than non-``pingme`` variants. More architectures will be added.
+  - Note: ``pingme`` variants have fewer architectures. More architectures will be added in future.
 
 
 "@
