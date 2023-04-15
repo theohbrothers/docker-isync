@@ -49,13 +49,17 @@ docker run --rm -it theohbrothers/docker-isync:$( $VARIANTS | ? { $_['tag_as_lat
 # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
 # See: https://wiki.archlinux.org/title/Isync
 # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
-nano .mbsyncrc
+touch .mbsyncrc
+vi .mbsyncrc
 
 # Sync
 docker run --rm -it \
     -v `$(pwd)/.mbsyncrc:/.mbsyncrc \
     -v mail:/mail \
-    theohbrothers/docker-isync:$( $VARIANTS | ? { $_['tag_as_latest'] } | % { $_['tag'] } ) mbsync --config /.mbsyncrc --all --verbose
+    theohbrothers/docker-isync:$( $VARIANTS | ? { $_['tag_as_latest'] } | % { $_['tag'] } )
+
+# Help
+docker run --rm -it theohbrothers/docker-isync:$( $VARIANTS | ? { $_['tag_as_latest'] } | % { $_['tag'] } ) --help
 ``````
 
 

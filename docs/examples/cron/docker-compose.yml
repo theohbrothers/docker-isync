@@ -46,7 +46,7 @@ services:
 
           # Run at 00:00 daily. To customize your cron schedule, use https://crontab.guru
           crontab - <<'EOF'
-          0 0 * * * mbsync --config /.mbsyncrc --all --verbose
+          0 0 * * * /sync
           EOF
 
           echo "Running crond"

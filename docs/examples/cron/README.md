@@ -23,7 +23,7 @@ docker-compose exec isync cat /.mbsyncrc
 To run the first-time sync:
 
 ```sh
-docker-compose exec isync mbsync --config /.mbsyncrc --all --verbose
+docker-compose exec isync /sync
 ```
 
 Now, wait out for `00:00` of tomorrow.

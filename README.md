@@ -31,13 +31,17 @@ docker run --rm -it theohbrothers/docker-isync:1.4.4 --help
 # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
 # See: https://wiki.archlinux.org/title/Isync
 # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
-nano .mbsyncrc
+touch .mbsyncrc
+vi .mbsyncrc
 
 # Sync
 docker run --rm -it \
     -v $(pwd)/.mbsyncrc:/.mbsyncrc \
     -v mail:/mail \
-    theohbrothers/docker-isync:1.4.4 mbsync --config /.mbsyncrc --all --verbose
+    theohbrothers/docker-isync:1.4.4
+
+# Help
+docker run --rm -it theohbrothers/docker-isync:1.4.4 --help
 ```
 
 ## Development
