@@ -56,6 +56,14 @@ $VARIANTS_SHARED = @{
                     }
                 )
             }
+            'sync' = @{
+                common = $true
+                passes = @(
+                    @{
+                        variables = @{}
+                    }
+                )
+            }
         }
     }
 }

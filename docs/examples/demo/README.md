@@ -92,7 +92,7 @@ docker-compose exec isync cat /.mbsyncrc
 Now, run the sync (should take only 1 second):
 
 ```sh
-docker-compose exec isync mbsync --config /.mbsyncrc --all --verbose
+docker-compose exec isync /sync
 ```
 
 List synced files:
