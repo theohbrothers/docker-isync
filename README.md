@@ -10,12 +10,14 @@ isync syncs IMAP as a `Maildir` (emails as individual files), in contrast to [im
 
 ## Tags
 
+All images contain `curl` and `jq`, which are useful for sending notifications if needed.
+
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
 | `:1.4.4`, `:latest` | [View](variants/1.4.4) |
 | `:1.4.4-restic` | [View](variants/1.4.4-restic) |
 
-- `restic`: Includes [`restic`](https://github.com/restic/restic). This is useful for [backups](#cron).
+- `restic`: Includes [`restic`](https://github.com/restic/restic). This is useful for [cron-based backups](#cron).
 
 ## Usage
 
@@ -25,11 +27,15 @@ The config file used in this image is `/mbsyncrc`.
 
 The volume used to store local Maildir is `/mail`.
 
+The main sync script is `/sync`.
+
 Here are three common sync cases:
 
 - [IMAP to Maildir](#imap-to-maildir) - One-way sync of IMAP server to local Maildir
 - [Maildir to IMAP](#maildir-to-imap) - One-way sync of local Maildir to IMAP server
 - [IMAP to IMAP](#imap-to-imap) - One-way sync of IMAP server to another IMAP server
+
+For cron-based examples, see [below](#cron).
 
 For a simple demo of the three sync cases, see this `docker-compose` [demo](docs/examples/demo).
 
@@ -155,11 +161,11 @@ docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mbsync:/mbsync theohbroth
 
 ### Cron
 
-For cron-based sync and cron-based backup, see `docker-compose` example(s):
+For cron-based sync and cron-based backup with notifications, see `docker-compose` example(s):
 
-- [Cron-based sync](docs/examples/cron-sync)
-- [Cron-based sync and cron-based backup in the same container](docs/examples/cron-sync-backup)
-- [Cron-based sync and cron-based backup in separate containers](docs/examples/cron-sync-backup-separate)
+- [Cron-based sync with notifications](docs/examples/cron-sync)
+- [Cron-based sync and backup with notifications in the same container](docs/examples/cron-sync-backup)
+- [Cron-based sync and backup with notifications in separate containers](docs/examples/cron-sync-backup-separate)
 
 ### Command line usage
 
@@ -171,7 +177,7 @@ docker run --rm -it theohbrothers/docker-isync:latest --help
 
 ## Known issues
 
-- For Exchange servers or `outlook.com` IMAP servers, it might be necessary to use `PipelineDepth 1` to limit the number of simultaneous IMAP commands. See [here](https://sourceforge.net/p/isync/bugs/22/).
+- For Exchange servers or `outlook.com` IMAP servers, it might be necessary to use `PipelineDepth 1` in the config file to limit the number of simultaneous IMAP commands. See [here](https://sourceforge.net/p/isync/bugs/22/).
 
 ## Development
 
