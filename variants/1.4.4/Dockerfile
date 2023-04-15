@@ -1,4 +1,22 @@
+# syntax=docker/dockerfile:1
 FROM alpine:3.17
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
+ARG BUILDPLATFORM
+ARG BUILDOS
+ARG BUILDARCH
+ARG BUILDVARIANT
+RUN set -eu; \
+    echo "TARGETPLATFORM="; \
+    echo "TARGETOS="; \
+    echo "TARGETARCH="; \
+    echo "TARGETVARIANT="; \
+    echo "BUILDPLATFORM="; \
+    echo "BUILDOS="; \
+    echo "BUILDARCH="; \
+    echo "BUILDVARIANT=";
 
 # Install isync
 RUN apk add --no-cache ca-certificates

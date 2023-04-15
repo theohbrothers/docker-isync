@@ -13,6 +13,9 @@ isync syncs IMAP as a `Maildir` (emails as individual files), in contrast to [im
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
 | `:1.4.4`, `:latest` | [View](variants/1.4.4) |
+| `:1.4.4-restic` | [View](variants/1.4.4-restic) |
+
+- `restic`: Includes [`restic`](https://github.com/restic/restic). This is useful for [backups](#cron).
 
 ## Usage
 
@@ -154,8 +157,9 @@ docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mbsync:/mbsync theohbroth
 
 For cron-based sync and cron-based backup, see `docker-compose` example(s):
 
-- [Cron-based sync](docs/examples/cron)
-- [Cron-based sync and cron-based backup](docs/examples/cron-restic)
+- [Cron-based sync](docs/examples/cron-sync)
+- [Cron-based sync and cron-based backup in the same container](docs/examples/cron-sync-backup)
+- [Cron-based sync and cron-based backup in separate containers](docs/examples/cron-sync-backup-separate)
 
 ### Command line usage
 

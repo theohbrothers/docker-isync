@@ -1,0 +1,81 @@
+version: '2'
+services:
+  isync:
+    image: test
+    environment:
+      - RESTIC_REPOSITORY=/backup
+      - RESTIC_PASSWORD=test
+    volumes:
+      - mail:/mail
+      - backup:/backup
+      - restore:/restore
+      - /root/.cache/restic # Restic cache. See: https://restic.readthedocs.io/en/stable/manual_rest.html#caching
+    networks:
+      - default
+    restart: unless-stopped
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          echo "Creating /mbsyncrc"
+          cat - > /mbsyncrc <<'EOF'
+          IMAPStore example-remote
+          Host imap.example.com
+          User test@example.com
+          Pass test
+          AuthMechs LOGIN
+          SSLType IMAPS
+          # Limit the number of simultaneous IMAP commands
+          PipelineDepth 30
+
+          MaildirStore example-local
+          SubFolders Verbatim
+          # The trailing '/' is important for Path
+          Path /mail/
+          Inbox /mail/INBOX
+
+          Channel example
+          Far :example-remote:
+          Near :example-local:
+          Patterns *
+          Create Near
+          Expunge Near
+          SyncState *
+          Sync Pull
+          EOF
+
+          echo 'Creating restic backup script'
+          touch /backup.sh && chmod 700 /backup.sh
+          cat - > /backup.sh <<'EOF'
+          #!/bin/sh
+          set -eux
+          restic init || true
+          restic snapshots
+          restic check -v
+          restic prune -v
+          restic forget --prune -v --keep-within '365d'
+          restic backup -v --tag cron /mail
+          EOF
+          realpath /backup.sh
+
+          # Run at 00:00 daily. To customize the cron schedule, use https://crontab.guru
+          echo "Creating crontab"
+          crontab - <<'EOF'
+          0 0 * * * /sync && /backup.sh
+          EOF
+          crontab -l
+
+          echo "Running crond"
+          exec crond -f
+
+networks:
+  default:
+
+volumes:
+  mail:
+  backup:
+  restore:

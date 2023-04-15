@@ -8,6 +8,7 @@ $local:VARIANTS_MATRIX = @(
             package_version = $v
             subvariants = @(
                 @{ components = @() }
+                @{ components = @('restic') }
             )
         }
     }

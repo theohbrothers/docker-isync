@@ -73,7 +73,7 @@ services:
       - |
           set -eu
 
-          echo 'Creating backup script'
+          echo 'Creating restic backup script'
           touch /backup.sh && chmod 700 /backup.sh
           cat - > /backup.sh <<'EOF'
           #!/bin/sh
