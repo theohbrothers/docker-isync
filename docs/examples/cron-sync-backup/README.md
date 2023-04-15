@@ -1,6 +1,6 @@
-# Cron
+# Cron sync and backup (same container)
 
-This demo shows a cron-based sync of IMAP to a local Maildir in `/mail`, and a cron-based backup of `mail` using [restic](https://github.com/restic/restic).
+This demo shows a cron-based sync of IMAP to a local Maildir in `/mail`, and a cron-based backup of `mail` using [restic](https://github.com/restic/restic), in the same container.
 
 Start the container(s):
 
@@ -11,13 +11,8 @@ docker-compose up
 `isync` service is now running:
 
 - `/mbsyncrc` config file is created
-- A crontab is created that runs sync daily at `00:00`
-- `crond` is started
-
-`restic` service is now running:
-
 - `/backup.sh` script is created
-- A crontab is created that runs `/backup.sh` daily at `00:05`
+- A crontab is created that runs sync and backup daily at `00:00`
 - `crond` is started
 
 ## 1. Perform first-time sync
@@ -53,7 +48,7 @@ docker-compose exec isync find /mail
 Perform a first-time backup of `/mail` using `restic`. This helps to ensure subsequent cron-based `restic` backups are speedy, since `restic` backups are incremental.
 
 ```sh
-docker-compose exec restic /backup.sh
+docker-compose exec isync /backup.sh
 ```
 
 The backup should succeed:
@@ -73,7 +68,7 @@ snapshot c9ed53b0 saved
 
 Now, wait out for `00:00` of tomorrow.
 
-At `00:00`, the incremental sync would have run very quickly.
+At `00:00`, the incremental sync and incremental backup would have run very quickly.
 
 List synced files:
 
@@ -81,16 +76,10 @@ List synced files:
 docker-compose exec isync find /mail
 ```
 
-## 4. Wait for cron backup
-
-Now, wait out for `00:05` of tomorrow.
-
-At `00:05`, the `restic` incremental backup would have run very quickly.
-
-List synced files:
+List backup files:
 
 ```sh
-docker-compose exec isync find /mail
+docker-compose exec isync find /backup
 ```
 
 ## 5. Restore a backup
@@ -100,7 +89,7 @@ If `/mail` is ever lost, `restic restore` can easily restore the data.
 First, list the backup snapshots:
 
 ```sh
-docker exec -it $( docker-compose ps -q restic ) restic snapshots
+docker-compose exec isync restic snapshots
 ```
 
 You should see a list of snapshots:
@@ -110,7 +99,7 @@ repository 5ba7868d opened (version 2, compression level auto)
 ID        Time                 Host          Tags        Paths
 --------------------------------------------------------------
 c9ed53b0  2023-04-15 15:48:48  346a68a05c86  cron        /mail
-81ec9c8f  2023-04-15 15:54:26  346a68a05c86  cron        /mail
+81ec9c8f  2023-04-15 00:00:00  346a68a05c86  cron        /mail
 --------------------------------------------------------------
 2 snapshots
 ```
@@ -118,31 +107,31 @@ c9ed53b0  2023-04-15 15:48:48  346a68a05c86  cron        /mail
 Restore the latest snapshot `81ec9c8f` to the `/restore` volume:
 
 ```sh
-docker exec -it $( docker-compose ps -q restic ) restic restore 81ec9c8f --target /restore
+docker-compose exec isync restic restore 81ec9c8f --target /restore
 ```
 
 List restored files in `/restore`:
 
 ```sh
-docker exec -it $( docker-compose ps -q restic ) find /restore
+docker-compose exec isync find /restore
 ```
 
 If all is well, clean out the `/mail` volume:
 
 ```sh
-docker-compose exec restic sh -c 'find /mail -mindepth 1 -maxdepth 1 | xargs rm -rf'
+docker-compose exec isync sh -c 'find /mail -mindepth 1 -maxdepth 1 | xargs rm -rf'
 ```
 
 Restore the latest snapshot `81ec9c8f` to the `/mail` volume:
 
 ```sh
-docker exec -it $( docker-compose ps -q restic ) restic restore 81ec9c8f --target /mail
+docker-compose exec isync restic restore 81ec9c8f --target /mail
 ```
 
 List restored files in `/mail`:
 
 ```sh
-docker exec -it $( docker-compose ps -q restic ) find /restore
+docker-compose exec isync find /mail
 ```
 
 The backup is fully restored.

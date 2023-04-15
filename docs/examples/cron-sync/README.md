@@ -1,4 +1,4 @@
-# Cron
+# Cron sync
 
 This demo shows a cron-based sync of IMAP to a local Maildir in `/mail`.
 
