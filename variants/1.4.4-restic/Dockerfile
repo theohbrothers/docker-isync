@@ -26,15 +26,17 @@ RUN set -eux; \
     apk add --no-cache openssl; \
     mbsync --version
 
+# See: https://github.com/restic/restic/blob/0.15.1/docker/Dockerfile
+RUN apk add --update --no-cache ca-certificates fuse openssh-client tzdata jq
 RUN set -eux; \
     RESTIC_VERSION=0.15.1; \
-    FILE=restic_0.15.1_${TARGETOS}_${TARGETARCH}.bz2; \
-    wget -q https://github.com/restic/restic/releases/download/v0.15.1/$FILE; \
-    wget -q https://github.com/restic/restic/releases/download/v0.15.1/SHA256SUMS; \
+    FILE=restic_${RESTIC_VERSION}_${TARGETOS}_${TARGETARCH}.bz2; \
+    wget -q https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/$FILE; \
+    wget -q https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/SHA256SUMS; \
     SHA=$( sha256sum "$FILE" ); \
     cat SHA256SUMS | grep "$FILE" | sha256sum -c -; \
     bzip2 -d "$FILE"; \
-    mv restic_0.15.1_${TARGETOS}_${TARGETARCH} /usr/local/bin/restic; \
+    mv restic_${RESTIC_VERSION}_${TARGETOS}_${TARGETARCH} /usr/local/bin/restic; \
     chmod +x /usr/local/bin/restic; \
     restic version | grep "^restic $RESTIC_VERSION";
 
