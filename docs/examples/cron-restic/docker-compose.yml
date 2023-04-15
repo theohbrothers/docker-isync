@@ -52,8 +52,55 @@ services:
           echo "Running crond"
           exec crond -f
 
+  restic:
+    image: restic/restic:0.15.1
+    environment:
+      - RESTIC_REPOSITORY=/backup
+      - RESTIC_PASSWORD=test
+    volumes:
+      - mail:/mail
+      - backup:/backup
+      - restore:/restore
+      - /root/.cache/restic # Restic cache. See: https://restic.readthedocs.io/en/stable/manual_rest.html#caching
+    networks:
+      - default
+    restart: unless-stopped
+    stop_signal: SIGKILL
+    entrypoint:
+      - /bin/sh
+    command:
+      - -c
+      - |
+          set -eu
+
+          echo 'Creating backup script'
+          touch /backup.sh && chmod 700 /backup.sh
+          cat - > /backup.sh <<'EOF'
+          #!/bin/sh
+          set -eux
+          restic init || true
+          restic snapshots
+          restic check -v
+          restic prune -v
+          restic forget --prune -v --keep-within '365d'
+          restic backup -v --tag cron /mail
+          EOF
+          realpath /backup.sh
+
+          # Run at 00:05 daily. To customize the cron schedule, use https://crontab.guru
+          echo "Creating crontab"
+          crontab - <<'EOF'
+          5 0 * * * /backup.sh
+          EOF
+          crontab -l
+
+          echo "Running crond"
+          exec crond -f
+
 networks:
   default:
 
 volumes:
   mail:
+  backup:
+  restore:

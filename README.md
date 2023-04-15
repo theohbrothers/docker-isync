@@ -152,9 +152,10 @@ docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mbsync:/mbsync theohbroth
 
 ### Cron
 
-For cron-based sync, see `docker-compose` example(s):
+For cron-based sync and cron-based backup, see `docker-compose` example(s):
 
-- [Cron-based sync using `crond`](docs/examples/cron)
+- [Cron-based sync](docs/examples/cron)
+- [Cron-based sync and cron-based backup](docs/examples/cron-restic)
 
 ### Command line usage
 
