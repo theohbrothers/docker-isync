@@ -52,7 +52,7 @@ services:
           # Run at 00:00 daily. To customize the cron schedule, use https://crontab.guru
           echo "Creating crontab"
           crontab - <<'EOF'
-          0 0 * * * /sync && /notify.sh sync-success|| /notify.sh sync-failed
+          0 0 * * * /sync && /notify.sh sync-success || /notify.sh sync-failed
           EOF
           crontab -l
 
