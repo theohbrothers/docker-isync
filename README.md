@@ -170,6 +170,24 @@ For cron-based sync and backup with notifications, see `docker-compose` example(
 - [Cron-based sync and backup (same container) with curl notifications](docs/examples/cron-sync-backup)
 - [Cron-based sync and backup (separate containers) with curl notifications](docs/examples/cron-sync-backup-separate)
 
+### Secrets
+
+Instead of typing secrets as plain text in `/mbsyncrc` config file for the `User` and `Pass` options of `IMAPStore` (or `IMAPAccount`), use `UserCmd` or `PassCmd` which accepts a [shell command](https://isync.sourceforge.io/mbsync.html). This helps to separate configuration from secrets.
+
+For example, if secrets are bind mounted as files in `/run/secrets/user` and `/run/secrets/pass`, use the following:
+
+```sh
+UserCmd "cat /run/secrets/user"
+PassCmd "cat /run/secrets/pass"
+```
+
+If secrets are in environment variables `IMAP_USER` and `IMAP_PASS`, use the following:
+
+```sh
+UserCmd "echo $IMAP_USER"
+PassCmd "echo $IMAP_PASS"
+```
+
 ### Command line usage
 
 To view command line usage:
