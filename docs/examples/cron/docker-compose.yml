@@ -16,9 +16,6 @@ services:
 
           echo "Creating /mbsyncrc"
           cat - > /mbsyncrc <<'EOF'
-          # See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
-          # See: https://wiki.archlinux.org/title/Isync
-          # See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
           IMAPStore example-remote
           Host imap.example.com
           User test@example.com

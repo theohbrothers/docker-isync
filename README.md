@@ -18,28 +18,155 @@ isync syncs IMAP as a `Maildir` (emails as individual files), in contrast to [im
 
 > Note: `isync` the project name, `mbsync` is the tool
 
-See the following `docker-compose` examples:
+The config file used in this image is `/mbsyncrc`.
 
-- [Cron-based sync using `crond`](docs/examples/cron)
-- [Demo sync](docs/examples/demo)
+The volume used to store local Maildir is `/mail`.
+
+Here are three common sync cases:
+
+- [IMAP to Maildir](#imap-to-maildir) - One-way sync of IMAP server to local Maildir
+- [Maildir to IMAP](#maildir-to-imap) - One-way sync of local Maildir to IMAP server
+- [IMAP to IMAP](#imap-to-imap) - One-way sync of IMAP server to another IMAP server
+
+For a simple demo of the three sync cases, see this `docker-compose` [demo](docs/examples/demo).
+
+### IMAP to Maildir
+
+This syncs `test@example.com` to a local Maildir `/mail`.  Sync state is kept in each folder in `/mail`.
+
+Create config file `mbsyncrc`:
 
 ```sh
-# Create a mbsync config of your IMAP and Maildir settings
-# See: https://isync.sourceforge.io/mbsync.html#CONFIGURATION
-# See: https://wiki.archlinux.org/title/Isync
-# See real-life examples in bug reports: https://sourceforge.net/p/isync/bugs/
-touch mbsyncrc
-vi mbsyncrc
+$ cat mbsyncrc
+IMAPStore example-remote
+Host imap.example.com
+User test@example.com
+Pass test
+AuthMechs LOGIN
+SSLType IMAPS
+# Limit the number of simultaneous IMAP commands
+PipelineDepth 30
 
-# Sync
-docker run --rm -it \
-    -v $(pwd)/mbsyncrc:/mbsyncrc \
-    -v mail:/mail \
-    theohbrothers/docker-isync:1.4.4
+MaildirStore example-local
+SubFolders Verbatim
+# The trailing '/' is important for Path
+Path /mail/
+Inbox /mail/INBOX
 
-# Print command line usage
-docker run --rm -it theohbrothers/docker-isync:1.4.4 --help
+Channel example
+Far :example-remote:
+Near :example-local:
+Patterns *
+Create Near
+Expunge Near
+SyncState *
+Sync Pull
 ```
+
+Sync:
+
+```sh
+docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mail:/mail theohbrothers/docker-isync:latest
+```
+
+### Maildir to IMAP
+
+This syncs a local Maildir `/mail` to `test2@example.com`. Sync state is kept in each folder in `/mail`.
+
+Create config file `mbsyncrc`:
+
+```sh
+$ cat mbsyncrc
+IMAPStore example-remote-2
+Host imap.example.com
+User test2@example.com
+Pass test
+AuthMechs LOGIN
+SSLType IMAPS
+# Limit the number of simultaneous IMAP commands
+PipelineDepth 30
+
+MaildirStore example-local
+SubFolders Verbatim
+# The trailing '/' is important for Path
+Path /mail/
+Inbox /mail/INBOX
+
+Channel example
+Far :example-remote-2:
+Near :example-local:
+Patterns *
+Create Far
+Expunge Far
+SyncState *
+Sync Push
+```
+
+Sync:
+
+```sh
+docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mail:/mail theohbrothers/docker-isync:latest
+```
+
+### IMAP to IMAP
+
+This syncs `test@example.com` to `test3@example.com`. Sync state is kept in the `/mbsync` volume. The `/mail` volume is not used since there's no local Maildir.
+
+Create config file `mbsyncrc`:
+
+```sh
+$ cat mbsyncrc
+IMAPStore example-remote
+Host imap.example.com
+User test@example.com
+Pass test
+AuthMechs LOGIN
+SSLType IMAPS
+# Limit the number of simultaneous IMAP commands
+PipelineDepth 30
+
+IMAPStore example-remote-3
+Host imap.example.com
+User test3@example.com
+Pass test
+AuthMechs LOGIN
+SSLType IMAPS
+# Limit the number of simultaneous IMAP commands
+PipelineDepth 30
+
+Channel example
+Far :example-remote:
+Near :example-remote-3:
+Patterns *
+Create Near
+Expunge Near
+SyncState /mbsync/
+Sync Pull
+```
+
+Sync:
+
+```sh
+docker run --rm -it -v $(pwd)/mbsyncrc:/mbsyncrc:ro -v mbsync:/mbsync theohbrothers/docker-isync:latest
+```
+
+### Cron
+
+For cron-based sync, see `docker-compose` example(s):
+
+- [Cron-based sync using `crond`](docs/examples/cron)
+
+### Command line usage
+
+To view command line usage:
+
+```sh
+docker run --rm -it theohbrothers/docker-isync:latest --help
+```
+
+## Known issues
+
+- For Exchange servers or `outlook.com` IMAP servers, it might be necessary to use `PipelineDepth 1` to limit the number of simultaneous IMAP commands. See [here](https://sourceforge.net/p/isync/bugs/22/).
 
 ## Development
 
