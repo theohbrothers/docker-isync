@@ -10,8 +10,6 @@ isync syncs an IMAP mailbox to a Maildir (emails as individual files), in contra
 
 ## Tags
 
-All images contain `curl` and `jq`, which are useful for sending notifications if needed.
-
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
 | `:1.4.4`, `:latest` | [View](variants/1.4.4) |
@@ -22,6 +20,11 @@ All images contain `curl` and `jq`, which are useful for sending notifications i
 - `restic`: Includes [`restic`](https://github.com/restic/restic). Useful for [cron-based backups](#cron-and-notifications).
 - `pingme`: Includes [`pingme`](https://github.com/kha7iq/pingme). Useful for sending notifications to [well-known services](https://pingme.lmno.pk/#/services).
   - Note: `pingme` variants have fewer architectures. More architectures will be added in future.
+
+All images contain:
+
+-  `curl` and `jq`, which are useful for sending notifications if needed
+- `rsync` which is useful for incrementally copying mails or backups
 
 ## Usage
 
