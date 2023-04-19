@@ -27,20 +27,46 @@ RUN set -eux; \
     mbsync --version
 
 # Install restic
-# These packages are needed for all restic features to work. See: https://github.com/restic/restic/blob/0.15.1/docker/Dockerfile
-RUN apk add --update --no-cache ca-certificates fuse openssh-client tzdata jq
 RUN set -eux; \
-    RESTIC_VERSION=0.15.1; \
-    FILE=restic_${RESTIC_VERSION}_${TARGETOS}_${TARGETARCH}.bz2; \
-    wget -q https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/$FILE; \
-    wget -q https://github.com/restic/restic/releases/download/v${RESTIC_VERSION}/SHA256SUMS; \
-    SHA=$( sha256sum "$FILE" ); \
-    cat SHA256SUMS | grep "$FILE" | sha256sum -c -; \
-    rm -f SHA256SUMS; \
+    export RESTIC_VERSION="v0.15.1"; \
+    case "$( uname -m )" in \
+        'x86')  \
+            URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_386.bz2; \
+            SHA256=50362f6c4c2d91cf0edc750c578b73605fdbb79443874110cc0a64913553f76b; \
+            ;; \
+        'x86_64')  \
+            URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_amd64.bz2; \
+            SHA256=3631e3c3833c84ba71f22ea3df20381676abc7476a7f6d14424d9abfada91414; \
+            ;; \
+        'armhf')  \
+            URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm.bz2; \
+            SHA256=1a5c1d2a3b17aa381c318b3f3919f7cfc4cd430c3a2c3053ba055fb4ccf38c97; \
+            ;; \
+        'armv7l')  \
+            URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm.bz2; \
+            SHA256=1a5c1d2a3b17aa381c318b3f3919f7cfc4cd430c3a2c3053ba055fb4ccf38c97; \
+            ;; \
+        'aarch64')  \
+            URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm64.bz2; \
+            SHA256=bf6e09743df6899a02f0647d899fb008932760ea872667287bbc47b42091a3b0; \
+            ;; \
+        's390x')  \
+            URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_s390x.bz2; \
+            SHA256=1ed7632518a86fa468f5823d6da4826d1787845cc0969a46da110c98139a3db4; \
+            ;; \
+        *) \
+            echo "Architecture not supported"; \
+            exit 1; \
+            ;; \
+    esac; \
+    FILE=restic.bz2; \
+    wget -q "$URL" -O "$FILE"; \
+    echo "$SHA256  $FILE" | sha256sum -c -; \
     bzip2 -d "$FILE"; \
-    mv restic_${RESTIC_VERSION}_${TARGETOS}_${TARGETARCH} /usr/local/bin/restic; \
+    mv -v restic /usr/local/bin/restic; \
     chmod +x /usr/local/bin/restic; \
-    restic version | grep "^restic $RESTIC_VERSION";
+    restic version; \
+    :
 
 # Install notification tools
 RUN apk add --no-cache curl jq
