@@ -28,21 +28,21 @@ RUN set -eux; \
 
 # Install pingme
 RUN set -eux; \
-    export PINGME_VERSION="v0.2.5"; \
+    PINGME_VERSION=v0.2.5; \
     case "$( uname -m )" in \
-        'x86')  \
-            URL=https://github.com/kha7iq/pingme/releases/download/v0.2.5/pingme_Linux_i386.tar.gz; \
+        'x86') \
+            URL=https://github.com/kha7iq/pingme/releases/download/v0.2.5/pingme_Linux_x86_64.tar.gz; \
             SHA256=5a14e80693800284f11daf7d5ba71a7cbe78e18948579584f36069d7a2f31d4a; \
             ;; \
-        'x86_64')  \
+        'x86_64') \
             URL=https://github.com/kha7iq/pingme/releases/download/v0.2.5/pingme_Linux_x86_64.tar.gz; \
             SHA256=93133b9c978d5a579526261255c2a7a9ca6dfc5ab42ef65e1de4fab15d8ac808; \
             ;; \
-        'armv7l')  \
+        'armv7l') \
             URL=https://github.com/kha7iq/pingme/releases/download/v0.2.5/pingme_Linux_armv7.tar.gz; \
             SHA256=6f26a3926e6ed038ca132b4d1985cd2f6c0ccf037fbc78f710bdc2cc76b3fc5a; \
             ;; \
-        'aarch64')  \
+        'aarch64') \
             URL=https://github.com/kha7iq/pingme/releases/download/v0.2.5/pingme_Linux_arm64.tar.gz; \
             SHA256=496bb93402611d5710bc66b26f64f13fc0f888d0b3cc1f4d7960c7c631860dd3; \
             ;; \

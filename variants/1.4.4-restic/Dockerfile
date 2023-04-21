@@ -28,29 +28,29 @@ RUN set -eux; \
 
 # Install restic
 RUN set -eux; \
-    export RESTIC_VERSION="v0.15.1"; \
+    RESTIC_VERSION=v0.15.1; \
     case "$( uname -m )" in \
-        'x86')  \
+        'x86') \
             URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_386.bz2; \
             SHA256=50362f6c4c2d91cf0edc750c578b73605fdbb79443874110cc0a64913553f76b; \
             ;; \
-        'x86_64')  \
+        'x86_64') \
             URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_amd64.bz2; \
             SHA256=3631e3c3833c84ba71f22ea3df20381676abc7476a7f6d14424d9abfada91414; \
             ;; \
-        'armhf')  \
+        'armhf') \
             URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm.bz2; \
             SHA256=1a5c1d2a3b17aa381c318b3f3919f7cfc4cd430c3a2c3053ba055fb4ccf38c97; \
             ;; \
-        'armv7l')  \
+        'armv7l') \
             URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm.bz2; \
             SHA256=1a5c1d2a3b17aa381c318b3f3919f7cfc4cd430c3a2c3053ba055fb4ccf38c97; \
             ;; \
-        'aarch64')  \
+        'aarch64') \
             URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm64.bz2; \
             SHA256=bf6e09743df6899a02f0647d899fb008932760ea872667287bbc47b42091a3b0; \
             ;; \
-        's390x')  \
+        's390x') \
             URL=https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_s390x.bz2; \
             SHA256=1ed7632518a86fa468f5823d6da4826d1787845cc0969a46da110c98139a3db4; \
             ;; \
