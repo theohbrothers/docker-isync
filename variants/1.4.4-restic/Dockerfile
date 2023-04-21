@@ -9,14 +9,14 @@ ARG BUILDOS
 ARG BUILDARCH
 ARG BUILDVARIANT
 RUN set -eu; \
-    echo "TARGETPLATFORM="; \
-    echo "TARGETOS="; \
-    echo "TARGETARCH="; \
-    echo "TARGETVARIANT="; \
-    echo "BUILDPLATFORM="; \
-    echo "BUILDOS="; \
-    echo "BUILDARCH="; \
-    echo "BUILDVARIANT=";
+    echo "TARGETPLATFORM=$TARGETPLATFORM"; \
+    echo "TARGETOS=$TARGETOS"; \
+    echo "TARGETARCH=$TARGETARCH"; \
+    echo "TARGETVARIANT=$TARGETVARIANT"; \
+    echo "BUILDPLATFORM=$BUILDPLATFORM"; \
+    echo "BUILDOS=$BUILDOS"; \
+    echo "BUILDARCH=$BUILDARCH"; \
+    echo "BUILDVARIANT=$BUILDVARIANT";
 
 # Install isync
 RUN apk add --no-cache ca-certificates
