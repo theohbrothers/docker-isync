@@ -4,10 +4,20 @@ function global:Set-Checksums($k, $url) {
     $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else { [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest $url).Content ) -split "`n" }
 }
 function global:Get-ChecksumsFile ($k, $keyword) {
-    $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -Last 1 | % { $_.TrimStart('*') }
+    $file = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -Last 1 | % { $_.TrimStart('*') }
+    if ($file) {
+        $file
+    }else {
+        "No file among $k checksums matching regex: $keyword" | Write-Warning
+    }
 }
 function global:Get-ChecksumsSha ($k, $keyword) {
-    $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -First 1
+    $sha = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -First 1
+    if ($sha) {
+        $sha
+    }else {
+        "No sha among $k checksums matching regex: $keyword" | Write-Warning
+    }
 }
 
 # Global functions
@@ -18,14 +28,16 @@ function global:Generate-DownloadBinary ($o) {
     $checksumsUrl = "$releaseUrl/$( $o['checksums'] )"
     Set-Checksums $o['binary'] $checksumsUrl
 
-    $binaryUpper = $o['binary'].ToUpper()
+    $shellVariable = "$( $o['binary'].ToUpper() -replace '[^A-Za-z0-9_]', '_' )_VERSION"
 @"
 # Install $( $o['binary'] )
 RUN set -eux; \
-    export $( $binaryUpper )_VERSION="$( $o['version'] )"; \
+    $shellVariable=$( $o['version'] ); \
     case "`$( uname -m )" in \
 
 "@
+
+    $o['architectures'] = if ($o.Contains('architectures')) { $o['architectures'] } else { 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x' }
     foreach ($a in ($o['architectures'] -split ',') ) {
         $split = $a -split '/'
         $os = $split[0]
@@ -33,49 +45,53 @@ RUN set -eux; \
         $archv = if ($split.Count -gt 2) { $split[2] } else { '' }
         switch ($a) {
             "$os/386" {
-                $regex = "$os[-_](i?$arch|x86)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'x86'
+                $regex = "$os[-_](i?$arch|x86(_64)?)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/amd64" {
-                $regex = "$os[-_]($arch|x86_64)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'x86_64'
+                $regex = "$os[-_]($arch|x86(_64)?)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/arm/v6" {
-                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'armhf'
+                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/arm/v7" {
-                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'armv7l'
+                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/arm64" {
-                $regex = "$os[-_]($arch|aarch64)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'aarch64'
+                $regex = "$os[-_]($arch|aarch64)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/ppc64le" {
-                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'ppc64le'
+                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/riscv64" {
-                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 'riscv64'
+                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
             }
             "$os/s390x" {
-                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
                 $hardware = 's390x'
+                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$"
             }
             default {
                 throw "Unsupported architecture: $a"
             }
         }
 
+        $file = Get-ChecksumsFile $o['binary'] $regex
+        if ($file) {
+            $sha = Get-ChecksumsSha $o['binary'] $regex
 @"
-        '$hardware')  \
-            URL=$releaseUrl/$( Get-ChecksumsFile $o['binary'] $regex ); \
-            SHA256=$( Get-ChecksumsSha $o['binary'] $regex ); \
+        '$hardware') \
+            URL=$releaseUrl/$file; \
+            SHA256=$sha; \
             ;; \
 
 "@
+        }
     }
 
 @"
@@ -119,14 +135,13 @@ RUN set -eux; \
     gzip -d "`$FILE"; \
 
 "@
-    }else {
-        throw "Invalid 'archiveformat'. Supported formats: .tar.gz, .tgz, .bz2, .gz"
     }
 
+    $destination = if ($o.Contains('destination')) { $o['destination'] } else { "/usr/local/bin/$( $o['binary'] )" }
 @"
-    mv -v $( $o['binary'] ) /usr/local/bin/$( $o['binary'] ); \
-    chmod +x /usr/local/bin/$( $o['binary'] ); \
-    $( $o['binary'] ) $( $o['versionSubcommand'] ); \
+    mv -v $( $o['binary'] ) $destination; \
+    chmod +x $destination; \
+    $( $o['testCommand'] ); \
 
 "@
 
@@ -192,7 +207,7 @@ foreach ($c in $VARIANT['_metadata']['components']) {
             )
             checksums = 'pingme_checksums.txt'
             architectures = $VARIANT['_metadata']['platforms']
-            versionSubcommand = '--version'
+            testCommand = 'pingme --version'
         }
     }
 
@@ -204,7 +219,7 @@ foreach ($c in $VARIANT['_metadata']['components']) {
             archiveformat = '.bz2'
             checksums = 'SHA256SUMS'
             architectures = $VARIANT['_metadata']['platforms']
-            versionSubcommand = 'version'
+            testCommand = 'restic version'
         }
     }
 }
