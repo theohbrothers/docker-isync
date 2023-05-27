@@ -60,7 +60,7 @@ In `snappymail` Admin Panel, click `Domains`, and click `+ Add Domain` button:
   - In `Server` box, enter `smtp.example.com`
   - In `Secure` dropdown, select `SSL/TLS`
   - In `Port` , enter `465`
-  - In `Timeout`, enter `60
+  - In `Timeout`, enter `60`
   - Uncheck `Use short login`
   - Check `Use authentication`
   - Check `Use login as sender`
