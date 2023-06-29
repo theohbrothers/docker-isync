@@ -1,7 +1,11 @@
 # Global cache for checksums
 function global:Set-Checksums($k, $url) {
     $global:CHECKSUMS = if (Get-Variable -Scope Global -Name CHECKSUMS -ErrorAction SilentlyContinue) { $global:CHECKSUMS } else { @{} }
-    $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else { [System.Text.Encoding]::UTF8.GetString( (Invoke-WebRequest $url).Content ) -split "`n" }
+    $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else {
+        $r = Invoke-WebRequest $url
+        $c = if ($r.headers['Content-Type'] -eq 'text/plain') { $r.Content } else { [System.Text.Encoding]::UTF8.GetString($r.Content) }
+        $c -split "`n"
+    }
 }
 function global:Get-ChecksumsFile ($k, $keyword) {
     $file = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -Last 1 | % { $_.TrimStart('*') }
@@ -24,9 +28,7 @@ function global:Get-ChecksumsSha ($k, $keyword) {
 function global:Generate-DownloadBinary ($o) {
     Set-StrictMode -Version Latest
 
-    $releaseUrl = "https://$( $o['project'] )/releases/download/$( $o['version'] )"
-    $checksumsUrl = "$releaseUrl/$( $o['checksums'] )"
-    Set-Checksums $o['binary'] $checksumsUrl
+    Set-Checksums "$( $o['binary'] )-$( $o['version'] )" $o['checksumsUrl']
 
     $shellVariable = "$( $o['binary'].ToUpper() -replace '[^A-Za-z0-9_]', '_' )_VERSION"
 @"
@@ -81,12 +83,12 @@ RUN set -eux; \
             }
         }
 
-        $file = Get-ChecksumsFile $o['binary'] $regex
+        $file = Get-ChecksumsFile "$( $o['binary'] )-$( $o['version'] )" $regex
         if ($file) {
-            $sha = Get-ChecksumsSha $o['binary'] $regex
+            $sha = Get-ChecksumsSha "$( $o['binary'] )-$( $o['version'] )" $regex
 @"
         '$hardware') \
-            URL=$releaseUrl/$file; \
+            URL=$( Split-Path $o['checksumsUrl'] -Parent )/$file; \
             SHA256=$sha; \
             ;; \
 
@@ -109,7 +111,6 @@ RUN set -eux; \
     echo "`$SHA256  `$FILE" | sha256sum -c -; \
 
 "@
-
 
     if ($o['archiveformat'] -match '\.tar\.gz|\.tgz') {
         if ($o['archivefiles'].Count -gt 0) {
@@ -135,10 +136,17 @@ RUN set -eux; \
     gzip -d "`$FILE"; \
 
 "@
+    }elseif ($o['archiveformat'] -match '\.zip') {
+@"
+    unzip "`$FILE" $( $o['binary'] ); \
+
+"@
     }
 
     $destination = if ($o.Contains('destination')) { $o['destination'] } else { "/usr/local/bin/$( $o['binary'] )" }
+    $destinationDir = Split-Path $destination -Parent
 @"
+    mkdir -pv $destinationDir; \
     mv -v $( $o['binary'] ) $destination; \
     chmod +x $destination; \
     $( $o['testCommand'] ); \
@@ -196,28 +204,28 @@ RUN set -eux; \
 
 foreach ($c in $VARIANT['_metadata']['components']) {
     if ($c -eq 'pingme') {
+        $PINGME_VERSION = 'v0.2.5'
         Generate-DownloadBinary @{
-            project = 'github.com/kha7iq/pingme'
-            version = 'v0.2.5'
             binary = 'pingme'
+            version = $PINGME_VERSION
+            checksumsUrl = "https://github.com/kha7iq/pingme/releases/download/$PINGME_VERSION/pingme_checksums.txt"
             archiveformat = '.tar.gz'
             archivefiles = @(
                 'pingme'
                 'LICENSE.md'
             )
-            checksums = 'pingme_checksums.txt'
             architectures = $VARIANT['_metadata']['platforms']
             testCommand = 'pingme --version'
         }
     }
 
     if ($c -eq 'restic') {
+        $RESTIC_VERSION = 'v0.15.1'
         Generate-DownloadBinary @{
-            project = 'github.com/restic/restic'
-            version = 'v0.15.1'
             binary = 'restic'
+            version = $RESTIC_VERSION
+            checksumsUrl = "https://github.com/restic/restic/releases/download/$RESTIC_VERSION/SHA256SUMS"
             archiveformat = '.bz2'
-            checksums = 'SHA256SUMS'
             architectures = $VARIANT['_metadata']['platforms']
             testCommand = 'restic version'
         }
