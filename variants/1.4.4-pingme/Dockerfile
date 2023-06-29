@@ -56,6 +56,7 @@ RUN set -eux; \
     echo "$SHA256  $FILE" | sha256sum -c -; \
     tar -xvf "$FILE" --no-same-owner --no-same-permissions -- pingme LICENSE.md; \
     rm -f "$FILE"; \
+    mkdir -pv /usr/local/bin; \
     mv -v pingme /usr/local/bin/pingme; \
     chmod +x /usr/local/bin/pingme; \
     pingme --version; \
