@@ -1,9 +1,8 @@
-$local:PACKAGE_VERSIONS = @(
-    '1.4.4'
-)
+$local:VERSIONS = @( Get-Content $PSScriptRoot/versions.json -Encoding utf8 -raw | ConvertFrom-Json )
+
 # Docker image variants' definitions
 $local:VARIANTS_MATRIX = @(
-    foreach ($v in $local:PACKAGE_VERSIONS) {
+    foreach ($v in $local:VERSIONS) {
         @{
             package_version = $v
             subvariants = @(
@@ -37,7 +36,7 @@ $VARIANTS = @(
                         $variant['package_version']
                         $subVariant['components'] | ? { $_ }
                 ) -join '-'
-                tag_as_latest = if ($variant['package_version'] -eq $local:PACKAGE_VERSIONS[0] -and $subVariant['components'].Count -eq 0) { $true } else { $false }
+                tag_as_latest = if ($variant['package_version'] -eq $local:VERSIONS[0] -and $subVariant['components'].Count -eq 0) { $true } else { $false }
             }
         }
     }
