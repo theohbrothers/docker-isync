@@ -49,8 +49,7 @@ try {
     # Get new versions
     $versionsNew = & {
         $content = (Invoke-WebRequest https://sourceforge.net/p/isync/isync/ref/master/tags/).Content
-        $matches = [regex]::Matches($content, '/p/isync/isync/ci/v[^/]+/tree/')
-        $matches -replace '/p/isync/isync/ci/v([^/]+)/tree/', '$1' | Sort-Object { [version]$_ } -Descending
+        [regex]::Matches($content, '/p/isync/isync/ci/v([^/]+)/tree/') | % { $_.Groups[1].Value } | Sort-Object { [version]$_ } -Descending
     }
     # Get changed versions
     $versionsChanged = Get-VersionsChanged -Versions $versions -VersionsNew $versionsNew -AsObject -Descending
