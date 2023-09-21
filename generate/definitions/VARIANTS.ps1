@@ -1,8 +1,9 @@
 $local:VERSIONS = @( Get-Content $PSScriptRoot/versions.json -Encoding utf8 -raw | ConvertFrom-Json )
+$local:PACKAGE = 'isync'
 
 # Docker image variants' definitions
 $local:VARIANTS_MATRIX = @(
-    foreach ($v in $local:VERSIONS) {
+    foreach ($v in $local:VERSIONS.isync.versions) {
         @{
             package_version = $v
             subvariants = @(
@@ -36,7 +37,7 @@ $VARIANTS = @(
                         $variant['package_version']
                         $subVariant['components'] | ? { $_ }
                 ) -join '-'
-                tag_as_latest = if ($variant['package_version'] -eq $local:VERSIONS[0] -and $subVariant['components'].Count -eq 0) { $true } else { $false }
+                tag_as_latest = if ($variant['package_version'] -eq $local:VARIANTS_MATRIX[0]['package_version'] -and $subVariant['components'].Count -eq 0) { $true } else { $false }
             }
         }
     }
