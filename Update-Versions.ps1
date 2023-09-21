@@ -42,19 +42,10 @@ try {
         Push-Location $repo
     }
 
-    # Get my versions from generate/definitions/versions.json
-    $versions = Get-Content $PSScriptRoot/generate/definitions/versions.json -Encoding utf8 | ConvertFrom-Json
-    # Get new versions
-    $versionsNew = & {
-        $content = (Invoke-WebRequest https://sourceforge.net/p/isync/isync/ref/master/tags/).Content
-        [regex]::Matches($content, '/p/isync/isync/ci/v([^/]+)/tree/') | % { $_.Groups[1].Value } | Sort-Object { [version]$_ } -Descending
-    }
-    # Get changed versions
-    $versionsChanged = Get-VersionsChanged -Versions $versions -VersionsNew $versionsNew -AsObject -Descending
     # Update versions.json, and open PRs with CI disabled
-    $prs = Update-DockerImageVariantsVersions -VersionsChanged $versionsChanged -CommitPreScriptblock { Move-Item .github .github.disabled -Force } -PR:$PR -WhatIf:$WhatIfPreference
+    $prs = Update-DockerImageVariantsVersions -CommitPreScriptblock { Move-Item .github .github.disabled -Force } -PR:$PR -WhatIf:$WhatIfPreference
     # Update versions.json, update PRs with CI, merge PRs one at a time, release and close milestone
-    $return = Update-DockerImageVariantsVersions -VersionsChanged $versionsChanged -PR:$PR -AutoMergeQueue:$AutoMergeQueue -AutoRelease:$AutoRelease -AutoReleaseTagConvention $AutoReleaseTagConvention -WhatIf:$WhatIfPreference
+    $return = Update-DockerImageVariantsVersions -PR:$PR -AutoMergeQueue:$AutoMergeQueue -AutoRelease:$AutoRelease -AutoReleaseTagConvention $AutoReleaseTagConvention -WhatIf:$WhatIfPreference
 }catch {
     throw
 }finally {
