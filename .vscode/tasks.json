@@ -11,10 +11,7 @@
                 "-c",
                 "Generate-DockerImageVariants ."
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "group": "build"
         },
         {
             "label": "Install DockerImageVariants module",

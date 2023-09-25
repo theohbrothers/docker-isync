@@ -31,6 +31,7 @@ $VARIANTS = @(
                         }
                     }
                     components = $subVariant['components']
+                    job_group_key = $variant['package_version']
                 }
                 # Docker image tag. E.g. '3.8-curl'
                 tag = @(
