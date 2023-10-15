@@ -2,6 +2,6 @@
   "isync": {
     "versions": ["1.4.4"],
     "versionsChangeScope": "minor",
-    "versionsNewScript": "$content = (Invoke-WebRequest https://sourceforge.net/p/isync/isync/ref/master/tags/).Content; [regex]::Matches($content, '/p/isync/isync/ci/v([^/]+)/tree/') | % { $_.Groups[1].Value } | Sort-Object { [version]$_ } -Descending"
+    "versionsNewScript": "$content = (Invoke-WebRequest https://sourceforge.net/p/isync/isync/ref/master/tags/).Content; [regex]::Matches($content, '/p/isync/isync/ci/v([^/]+)/tree/') | % { $_.Groups[1].Value } | Sort-Object { [version]$_ } -Descending | ? { [version]$_ -ge [version]'1.4' }"
   }
 }
