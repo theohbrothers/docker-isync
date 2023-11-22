@@ -41,7 +41,7 @@ services:
   # Mail server
   # See: https://docker-mailserver.github.io/docker-mailserver/latest
   docker-mailserver:
-    image: docker.io/mailserver/docker-mailserver:latest
+    image: docker.io/mailserver/docker-mailserver:12
     domainname: mail.example.com
     environment:
       - ENABLE_SPAMASSASSIN=0
@@ -57,11 +57,11 @@ services:
       - SSL_CERT_PATH=/certs/mail.example.com-cert.pem
       - SSL_KEY_PATH=/certs/mail.example.com-key.pem
     volumes:
-      - certs/:/certs/
+      - certs:/certs
       - dms-mail-data:/var/mail
       - dms-mail-state:/var/mail-state
-      - dms-mail-logs/:/var/log/mail/
-      - dms-config/:/tmp/docker-mailserver/
+      - dms-mail-logs/:/var/log/mail
+      - dms-config:/tmp/docker-mailserver
     networks:
       default:
         aliases:
