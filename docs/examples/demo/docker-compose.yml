@@ -60,7 +60,7 @@ services:
       - certs:/certs
       - dms-mail-data:/var/mail
       - dms-mail-state:/var/mail-state
-      - dms-mail-logs/:/var/log/mail
+      - dms-mail-logs:/var/log/mail
       - dms-config:/tmp/docker-mailserver
     networks:
       default:
