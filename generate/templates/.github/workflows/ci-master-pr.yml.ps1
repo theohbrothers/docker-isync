@@ -36,7 +36,9 @@ jobs:
 '@
 
 # Group variants by the package version
-$groups = $VARIANTS | Group-Object -Property { $_['_metadata']['job_group_key'] } | Sort-Object { [version]$_.Name.Split('-')[0] } -Descending
+$groups = @(
+  $VARIANTS | Group-Object -Property { $_['_metadata']['job_group_key'] } | Sort-Object { [version]$_.Name.Split('-')[0] } -Descending
+)
 $WORKFLOW_JOB_NAMES = $groups | % { "build-$( $_.Name.Replace('.', '-') )" }
 foreach ($g in $groups) {
 @"
@@ -46,7 +48,7 @@ foreach ($g in $groups) {
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Display system info (linux)
       run: |
@@ -70,7 +72,7 @@ foreach ($g in $groups) {
       uses: docker/setup-buildx-action@v2
 
     - name: Cache Docker layers
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: `${{ runner.os }}-buildx-$( $g.Name )-`${{ github.sha }}
@@ -119,7 +121,7 @@ foreach ($v in $g.Group) {
     - name: $( $v['tag' ] ) - Build (PRs)
       # Run only on pull requests
       if: github.event_name == 'pull_request'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: $( $v['build_dir_rel'] )
         platforms: $( $v['_metadata']['platforms'] -join ',' )
@@ -133,7 +135,7 @@ foreach ($v in $g.Group) {
     - name: $( $v['tag' ] ) - Build and push (master)
       # Run only on master
       if: github.ref == 'refs/heads/master'
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: $( $v['build_dir_rel'] )
         platforms: $( $v['_metadata']['platforms'] -join ',' )
@@ -146,7 +148,7 @@ foreach ($v in $g.Group) {
 
     - name: $( $v['tag' ] ) - Build and push (release)
       if: startsWith(github.ref, 'refs/tags/')
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v5
       with:
         context: $( $v['build_dir_rel'] )
         platforms: $( $v['_metadata']['platforms'] -join ',' )
