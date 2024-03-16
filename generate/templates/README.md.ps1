@@ -1,7 +1,7 @@
 @"
 # docker-isync
 
-[![github-actions](https://github.com/theohbrothers/docker-isync/workflows/ci-master-pr/badge.svg)](https://github.com/theohbrothers/docker-isync/actions)
+[![github-actions](https://github.com/theohbrothers/docker-isync/actions/workflows/ci-master-pr.yml/badge.svg?branch=master)](https://github.com/theohbrothers/docker-isync/actions/workflows/ci-master-pr.yml)
 [![github-release](https://img.shields.io/github/v/release/theohbrothers/docker-isync?style=flat-square)](https://github.com/theohbrothers/docker-isync/releases/)
 [![docker-image-size](https://img.shields.io/docker/image-size/theohbrothers/docker-isync/latest)](https://hub.docker.com/r/theohbrothers/docker-isync)
 
