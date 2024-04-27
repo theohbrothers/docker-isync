@@ -19,7 +19,7 @@ jobs:
     steps:
     - run: |
         apk add --no-cache git
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Ignore git permissions
       run: |
         git config --global --add safe.directory "$( pwd )"
@@ -65,11 +65,11 @@ foreach ($g in $groups) {
 
     # See: https://github.com/docker/build-push-action/blob/v2.6.1/docs/advanced/cache.md#github-cache
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+      uses: docker/setup-qemu-action@v3
 
     - name: Set up Docker Buildx
       id: buildx
-      uses: docker/setup-buildx-action@v2
+      uses: docker/setup-buildx-action@v3
 
     - name: Cache Docker layers
       uses: actions/cache@v4
@@ -83,7 +83,7 @@ foreach ($g in $groups) {
     - name: Login to Docker Hub registry
       # Run on master and tags
       if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         username: `${{ secrets.DOCKERHUB_REGISTRY_USER }}
         password: `${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
@@ -194,7 +194,7 @@ if ( $v['tag_as_latest'] ) {
     runs-on: ubuntu-latest
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "master"
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v6
         with:
           config-name: release-drafter.yml
           publish: false
@@ -208,7 +208,7 @@ if ( $v['tag_as_latest'] ) {
     runs-on: ubuntu-latest
     steps:
       # Drafts your next Release notes as Pull Requests are merged into "master"
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v6
         with:
           config-name: release-drafter.yml
           publish: true
@@ -223,9 +223,9 @@ if ( $v['tag_as_latest'] ) {
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Docker Hub Description
-      uses: peter-evans/dockerhub-description@v3
+      uses: peter-evans/dockerhub-description@v4
       with:
         username: `${{ secrets.DOCKERHUB_REGISTRY_USER }}
         password: `${{ secrets.DOCKERHUB_REGISTRY_PASSWORD }}
