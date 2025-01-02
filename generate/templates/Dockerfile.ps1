@@ -32,7 +32,7 @@ RUN set -eux; \
 
 foreach ($c in $VARIANT['_metadata']['components']) {
     if ($c -eq 'pingme') {
-        $PINGME_VERSION = 'v0.2.5'
+        $PINGME_VERSION = 'v0.2.6'
         Generate-DownloadBinary @{
             binary = 'pingme'
             version = $PINGME_VERSION
