@@ -48,7 +48,7 @@ foreach ($c in $VARIANT['_metadata']['components']) {
     }
 
     if ($c -eq 'restic') {
-        $RESTIC_VERSION = 'v0.15.1'
+        $RESTIC_VERSION = 'v0.15.2'
         Generate-DownloadBinary @{
             binary = 'restic'
             version = $RESTIC_VERSION

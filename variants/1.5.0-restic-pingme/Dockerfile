@@ -28,23 +28,23 @@ RUN set -eux; \
 
 # Install restic
 RUN set -eux; \
-    RESTIC_VERSION=v0.15.1; \
+    RESTIC_VERSION=v0.15.2; \
     case "$( uname -m )" in \
         'x86') \
-            URL="https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_386.bz2"; \
-            SHA256=50362f6c4c2d91cf0edc750c578b73605fdbb79443874110cc0a64913553f76b; \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_386.bz2"; \
+            SHA256=9245cafed0bc3f0531950cb8f31e3b7c2711a2785c79ec088d554bb8fe16ae81; \
             ;; \
         'x86_64') \
-            URL="https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_amd64.bz2"; \
-            SHA256=3631e3c3833c84ba71f22ea3df20381676abc7476a7f6d14424d9abfada91414; \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_amd64.bz2"; \
+            SHA256=44ce3367b0b413ad48757de8e2a1f4e2c30137e7cdc77db64906f3eb7087b78f; \
             ;; \
         'armv7l') \
-            URL="https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm.bz2"; \
-            SHA256=1a5c1d2a3b17aa381c318b3f3919f7cfc4cd430c3a2c3053ba055fb4ccf38c97; \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_arm.bz2"; \
+            SHA256=3a379eedcb90ad0ec60a24c89f9892eb7a12ddb8a28045e432fc2c43e7faa186; \
             ;; \
         'aarch64') \
-            URL="https://github.com/restic/restic/releases/download/v0.15.1/restic_0.15.1_linux_arm64.bz2"; \
-            SHA256=bf6e09743df6899a02f0647d899fb008932760ea872667287bbc47b42091a3b0; \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_arm64.bz2"; \
+            SHA256=1f9d03503d8756311b7904e99aee3460f1ace427aad88f6dcba6a97a9c5a8171; \
             ;; \
         *) \
             echo "Architecture not supported"; \
