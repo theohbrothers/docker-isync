@@ -4,6 +4,18 @@
 $local:VARIANTS_MATRIX = @(
     @{
         package = 'isync'
+        package_version = '1.5.0'
+        distro = 'alpine'
+        distro_version = '3.21'
+        subvariants = @(
+            @{ components = @() }
+            @{ components = @('pingme') }
+            @{ components = @('restic') }
+            @{ components = @('restic', 'pingme') }
+        )
+    }
+    @{
+        package = 'isync'
         package_version = '1.4.4'
         distro = 'alpine'
         distro_version = '3.19'

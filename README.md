@@ -12,7 +12,11 @@ isync syncs an IMAP mailbox to a Maildir (emails as individual files), in contra
 
 | Tag | Dockerfile Build Context |
 |:-------:|:---------:|
-| `:1.4.4`, `:latest` | [View](variants/1.4.4) |
+| `:1.5.0`, `:latest` | [View](variants/1.5.0) |
+| `:1.5.0-pingme` | [View](variants/1.5.0-pingme) |
+| `:1.5.0-restic` | [View](variants/1.5.0-restic) |
+| `:1.5.0-restic-pingme` | [View](variants/1.5.0-restic-pingme) |
+| `:1.4.4` | [View](variants/1.4.4) |
 | `:1.4.4-pingme` | [View](variants/1.4.4-pingme) |
 | `:1.4.4-restic` | [View](variants/1.4.4-restic) |
 | `:1.4.4-restic-pingme` | [View](variants/1.4.4-restic-pingme) |
