@@ -1,7 +1,18 @@
 {
-  "isync": {
-    "versions": ["1.4.4"],
+  "pingme": {
+    "versions": [
+      "0.2.6"
+    ],
     "versionsChangeScope": "minor",
-    "versionsNewScript": "$content = (Invoke-WebRequest https://sourceforge.net/p/isync/isync/ref/master/tags/).Content; [regex]::Matches($content, '/p/isync/isync/ci/v([^/]+)/tree/') | % { $_.Groups[1].Value } | Sort-Object { [version]$_ } -Descending | ? { [version]$_ -ge [version]'1.4' }"
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/kha7iq/pingme/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | ? { [version]$_ -lt [version]'0.3.0' } | Sort-Object { [version]$_ } -Descending",
+    "limit": 1
+  },
+  "restic": {
+    "versions": [
+      "0.15.2"
+    ],
+    "versionsChangeScope": "minor",
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/restic/restic/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | ? { [version]$_ -lt [version]'0.16.0' } | Sort-Object { [version]$_ } -Descending",
+    "limit": 1
   }
 }
