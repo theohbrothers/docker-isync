@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM alpine:3.17
+FROM alpine:3.19
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
