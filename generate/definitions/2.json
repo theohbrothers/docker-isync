@@ -1,0 +1,492 @@
+[
+    {
+      "ref": "refs/tags/v0.0.1alpha",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjAuMWFscGhh",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.0.1alpha",
+      "object": {
+        "sha": "70f9157aa514408ee2abd8271d80a378c4df405c",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/70f9157aa514408ee2abd8271d80a378c4df405c"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.1.0-doc",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEuMC1kb2M=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.1.0-doc",
+      "object": {
+        "sha": "ce77e6bd38c2dc255a0a42d89d10724ec6adf910",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/ce77e6bd38c2dc255a0a42d89d10724ec6adf910"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.1.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.1.0",
+      "object": {
+        "sha": "e494151dd5c7288eee2ef74115b45b706ab84794",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/e494151dd5c7288eee2ef74115b45b706ab84794"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.2.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjIuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.2.0",
+      "object": {
+        "sha": "0230454ac3bf97c14f873571ed4b2f25da348a4e",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/0230454ac3bf97c14f873571ed4b2f25da348a4e"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.3.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjMuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.3.0",
+      "object": {
+        "sha": "b1534fd8cc71b1d4c9f03f31bf42a030219ce7aa",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/b1534fd8cc71b1d4c9f03f31bf42a030219ce7aa"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.3.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjMuMQ==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.3.1",
+      "object": {
+        "sha": "4df87f6d28fc16125a10d26459818735ca278ce4",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/4df87f6d28fc16125a10d26459818735ca278ce4"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.3.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjMuMg==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.3.2",
+      "object": {
+        "sha": "e2d3c78b2897eae39e5167ee910252de1ec12805",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/e2d3c78b2897eae39e5167ee910252de1ec12805"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.3.3",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjMuMw==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.3.3",
+      "object": {
+        "sha": "3d89abacfb58ca675d8689bc8d44257b96aaedff",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/3d89abacfb58ca675d8689bc8d44257b96aaedff"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.4.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjQuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.4.0",
+      "object": {
+        "sha": "92eb5e89dfc6b7bcc7eea7629ccf06f43d0a72d0",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/92eb5e89dfc6b7bcc7eea7629ccf06f43d0a72d0"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.5.0-rc.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjUuMC1yYy4x",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.5.0-rc.1",
+      "object": {
+        "sha": "a4e194ee9382b9da50b5e1c81c7afb79c81759a4",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/a4e194ee9382b9da50b5e1c81c7afb79c81759a4"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.5.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjUuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.5.0",
+      "object": {
+        "sha": "ca9bcd567b74227f6b0a903ee4f93635d4d03e8a",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/ca9bcd567b74227f6b0a903ee4f93635d4d03e8a"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.6.0-rc.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjYuMC1yYy4x",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.6.0-rc.1",
+      "object": {
+        "sha": "8090b048a8874ab796d3402755c52e5bf998ddfc",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/8090b048a8874ab796d3402755c52e5bf998ddfc"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.6.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjYuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.6.0",
+      "object": {
+        "sha": "5a77b48abc4d589c63df80d6e9e6e230e652157e",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/5a77b48abc4d589c63df80d6e9e6e230e652157e"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.6.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjYuMQ==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.6.1",
+      "object": {
+        "sha": "ef462e65b4fd2a2657d4504ac640129077c90fec",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/ef462e65b4fd2a2657d4504ac640129077c90fec"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.7.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjcuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.7.0",
+      "object": {
+        "sha": "cd25e8e2d0d245389be83f2f31cbba18927b2b85",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/cd25e8e2d0d245389be83f2f31cbba18927b2b85"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.7.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjcuMQ==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.7.1",
+      "object": {
+        "sha": "402b6f5f8d0171d7061cbeab67725fce794fc376",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/402b6f5f8d0171d7061cbeab67725fce794fc376"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.7.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjcuMg==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.7.2",
+      "object": {
+        "sha": "869c68f6bbf38f7c167a94b4e154cecd26238b9d",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/869c68f6bbf38f7c167a94b4e154cecd26238b9d"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.7.3",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjcuMw==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.7.3",
+      "object": {
+        "sha": "e27c47ef1eb76780c5b27a650b214d974e0498db",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/e27c47ef1eb76780c5b27a650b214d974e0498db"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.8.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjguMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.8.0",
+      "object": {
+        "sha": "026c9a50cee6a8de7810c6857ffd3e016ce566f9",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/026c9a50cee6a8de7810c6857ffd3e016ce566f9"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.8.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjguMQ==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.8.1",
+      "object": {
+        "sha": "84253934823edf6acd2fbb24a7f39ccbd1313617",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/84253934823edf6acd2fbb24a7f39ccbd1313617"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.8.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjguMg==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.8.2",
+      "object": {
+        "sha": "61436a419da48a7063edb36abde462bab6f2ba7e",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/61436a419da48a7063edb36abde462bab6f2ba7e"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.8.3",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjguMw==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.8.3",
+      "object": {
+        "sha": "93455f0fc0225992c48527d1f252a5e925c49878",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/93455f0fc0225992c48527d1f252a5e925c49878"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuMA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.0",
+      "object": {
+        "sha": "af8d443c365b661e5a550543f0c1938b2a0afab4",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/af8d443c365b661e5a550543f0c1938b2a0afab4"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuMQ==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.1",
+      "object": {
+        "sha": "99c353c50572df3de79e42b8750349d8721560a3",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/99c353c50572df3de79e42b8750349d8721560a3"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuMg==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.2",
+      "object": {
+        "sha": "6d28341accccaf3f0899b9bbfc01ad7bd00e9140",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/6d28341accccaf3f0899b9bbfc01ad7bd00e9140"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.3",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuMw==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.3",
+      "object": {
+        "sha": "8d66e511db80807139ad5b55cef2e3b78596b398",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/8d66e511db80807139ad5b55cef2e3b78596b398"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.4",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuNA==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.4",
+      "object": {
+        "sha": "6b1d5265e37b57ac945a2b0d782ea71a18257990",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/6b1d5265e37b57ac945a2b0d782ea71a18257990"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.5",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuNQ==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.5",
+      "object": {
+        "sha": "0923ad49342975a2c465ddaa1b14d6f0e58912c4",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/0923ad49342975a2c465ddaa1b14d6f0e58912c4"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.9.6",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjkuNg==",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.9.6",
+      "object": {
+        "sha": "e6fd717832762a98656903ff2ee4257dbdd9330e",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/e6fd717832762a98656903ff2ee4257dbdd9330e"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.10.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEwLjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.10.0",
+      "object": {
+        "sha": "4d6bf076be7ce9ed60c6bb8d7f077ba9518fc9ec",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/4d6bf076be7ce9ed60c6bb8d7f077ba9518fc9ec"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.11.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjExLjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.11.0",
+      "object": {
+        "sha": "a5772a1d86da863004f86abdc320fdca677789ab",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/a5772a1d86da863004f86abdc320fdca677789ab"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.12.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEyLjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.12.0",
+      "object": {
+        "sha": "7ddfef2b57b71e32d0339c24a1db23e22c5cd79b",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/7ddfef2b57b71e32d0339c24a1db23e22c5cd79b"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.12.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEyLjE=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.12.1",
+      "object": {
+        "sha": "09832b14658f4e0132525195ac6410b819cdeb15",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/09832b14658f4e0132525195ac6410b819cdeb15"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.13.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEzLjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.13.0",
+      "object": {
+        "sha": "53947c719667cf147318f9dd1ea4598fa44df408",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/53947c719667cf147318f9dd1ea4598fa44df408"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.13.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjEzLjE=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.13.1",
+      "object": {
+        "sha": "08b154c3ddd9b41b44dd2bd39c949c25a122462e",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/08b154c3ddd9b41b44dd2bd39c949c25a122462e"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.14.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE0LjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.14.0",
+      "object": {
+        "sha": "b222261082d82c26fd3fc23deb3342422007cc3d",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/b222261082d82c26fd3fc23deb3342422007cc3d"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.15.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE1LjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.15.0",
+      "object": {
+        "sha": "d861b60349e63720e546590d85df16409d116ee3",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/d861b60349e63720e546590d85df16409d116ee3"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.15.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE1LjE=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.15.1",
+      "object": {
+        "sha": "8b569f5710e77cdaecfb6777b44123bbce12fe61",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/8b569f5710e77cdaecfb6777b44123bbce12fe61"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.15.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE1LjI=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.15.2",
+      "object": {
+        "sha": "69fe87ce28ae7e58739fd3b35c67cf213f78884d",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/69fe87ce28ae7e58739fd3b35c67cf213f78884d"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.16.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE2LjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.16.0",
+      "object": {
+        "sha": "bf654ebb7284b6cff4f02dde32a68c87700135fc",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/bf654ebb7284b6cff4f02dde32a68c87700135fc"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.16.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE2LjE=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.16.1",
+      "object": {
+        "sha": "e1cb24878e999ee544fdae1fb5ba402905c951a3",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/e1cb24878e999ee544fdae1fb5ba402905c951a3"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.16.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE2LjI=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.16.2",
+      "object": {
+        "sha": "981cdce4cdb97268effa5294392311dbd11214b7",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/981cdce4cdb97268effa5294392311dbd11214b7"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.16.3",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE2LjM=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.16.3",
+      "object": {
+        "sha": "afca91fbfb7277a07870a0c17d22140a1cf90f9f",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/afca91fbfb7277a07870a0c17d22140a1cf90f9f"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.16.4",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE2LjQ=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.16.4",
+      "object": {
+        "sha": "9a9cc6dd0d978a8a452ff181558d5856dc217a37",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/9a9cc6dd0d978a8a452ff181558d5856dc217a37"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.16.5",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE2LjU=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.16.5",
+      "object": {
+        "sha": "6862b4e9b52748cc206d1f5577809a477e4ddb4b",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/6862b4e9b52748cc206d1f5577809a477e4ddb4b"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.17.0",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE3LjA=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.17.0",
+      "object": {
+        "sha": "7577c6d1bb11082fbdb311303fd802ab3428cde8",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/7577c6d1bb11082fbdb311303fd802ab3428cde8"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.17.1",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE3LjE=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.17.1",
+      "object": {
+        "sha": "037c0e4c204cae3e3b748a9835c8dfd5a54d0e2e",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/037c0e4c204cae3e3b748a9835c8dfd5a54d0e2e"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.17.2",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE3LjI=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.17.2",
+      "object": {
+        "sha": "90bfc45cf2532a8f772c604a0e957e9e799b8a16",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/90bfc45cf2532a8f772c604a0e957e9e799b8a16"
+      }
+    },
+    {
+      "ref": "refs/tags/v0.17.3",
+      "node_id": "MDM6UmVmMTkyMDU4OTY6cmVmcy90YWdzL3YwLjE3LjM=",
+      "url": "https://api.github.com/repos/restic/restic/git/refs/tags/v0.17.3",
+      "object": {
+        "sha": "39a6124be558622b0473175af5f8062f3bdca488",
+        "type": "tag",
+        "url": "https://api.github.com/repos/restic/restic/git/tags/39a6124be558622b0473175af5f8062f3bdca488"
+      }
+    }
+  ]
