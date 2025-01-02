@@ -1,3 +1,5 @@
+$global:VERSIONS = @( Get-Content $PSScriptRoot/../definitions/versions.json -Encoding utf8 -raw | ConvertFrom-Json )
+
 @"
 # syntax=docker/dockerfile:1
 FROM $( $VARIANT['_metadata']['distro'] ):$( $VARIANT['_metadata']['distro_version'] )
@@ -32,7 +34,7 @@ RUN set -eux; \
 
 foreach ($c in $VARIANT['_metadata']['components']) {
     if ($c -eq 'pingme') {
-        $PINGME_VERSION = 'v0.2.6'
+        $PINGME_VERSION = "v$( $global:VERSIONS.pingme.versions[0] )"
         Generate-DownloadBinary @{
             binary = 'pingme'
             version = $PINGME_VERSION
@@ -48,7 +50,7 @@ foreach ($c in $VARIANT['_metadata']['components']) {
     }
 
     if ($c -eq 'restic') {
-        $RESTIC_VERSION = 'v0.15.2'
+        $RESTIC_VERSION = "v$( $global:VERSIONS.restic.versions[0] )"
         Generate-DownloadBinary @{
             binary = 'restic'
             version = $RESTIC_VERSION
