@@ -1,18 +1,18 @@
-$local:VERSIONS = @( Get-Content $PSScriptRoot/versions.json -Encoding utf8 -raw | ConvertFrom-Json )
-$local:PACKAGE = 'isync'
+# $local:VERSIONS = @( Get-Content $PSScriptRoot/versions.json -Encoding utf8 -raw | ConvertFrom-Json )
 
 # Docker image variants' definitions
 $local:VARIANTS_MATRIX = @(
-    foreach ($v in $local:VERSIONS.isync.versions) {
-        @{
-            package_version = $v
-            subvariants = @(
-                @{ components = @() }
-                @{ components = @('pingme') }
-                @{ components = @('restic') }
-                @{ components = @('restic', 'pingme') }
-            )
-        }
+    @{
+        package = 'isync'
+        package_version = '1.4.4'
+        distro = 'alpine'
+        distro_version = '3.19'
+        subvariants = @(
+            @{ components = @() }
+            @{ components = @('pingme') }
+            @{ components = @('restic') }
+            @{ components = @('restic', 'pingme') }
+        )
     }
 )
 
@@ -22,7 +22,10 @@ $VARIANTS = @(
             @{
                 # Metadata object
                 _metadata = @{
+                    package = $variant['package']
                     package_version = $variant['package_version']
+                    distro = $variant['distro']
+                    distro_version = $variant['distro_version']
                     platforms = & {
                         if ( $subVariant['components'] -contains 'pingme') {
                             'linux/386,linux/amd64,linux/arm/v7,linux/arm64'

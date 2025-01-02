@@ -1,6 +1,6 @@
 @"
 # syntax=docker/dockerfile:1
-FROM alpine:3.17
+FROM $( $VARIANT['_metadata']['distro'] ):$( $VARIANT['_metadata']['distro_version'] )
 ARG TARGETPLATFORM
 ARG TARGETOS
 ARG TARGETARCH
@@ -22,7 +22,7 @@ RUN set -eu; \
 # Install isync
 RUN apk add --no-cache ca-certificates
 RUN set -eux; \
-    apk add --no-cache isync~$( $VARIANT['_metadata']['package_version'] ); \
+    apk add --no-cache $( $VARIANT['_metadata']['package'] )~$( $VARIANT['_metadata']['package_version'] ); \
     # For mbsync-get-cert to get a self-signed certificate
     apk add --no-cache openssl; \
     mbsync --version
