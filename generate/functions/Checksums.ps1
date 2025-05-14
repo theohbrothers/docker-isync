@@ -1,5 +1,6 @@
+# Version 0.1.1
 # Global cache for checksums
-function global:Set-Checksums($k, $url) {
+function Set-Checksums($k, $url) {
     $global:CHECKSUMS = if (Get-Variable -Scope Global -Name CHECKSUMS -ErrorAction SilentlyContinue) { $global:CHECKSUMS } else { @{} }
     $global:CHECKSUMS[$k] = if ($global:CHECKSUMS[$k]) { $global:CHECKSUMS[$k] } else {
         $r = Invoke-WebRequest $url
@@ -7,7 +8,7 @@ function global:Set-Checksums($k, $url) {
         $c -split "`n"
     }
 }
-function global:Get-ChecksumsFile ($k, $keyword) {
+function Get-ChecksumsFile ($k, $keyword) {
     $file = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -Last 1 | % { $_.TrimStart('*') }
     if ($file) {
         $file
@@ -15,7 +16,7 @@ function global:Get-ChecksumsFile ($k, $keyword) {
         "No file among $k checksums matching regex: $keyword" | Write-Warning
     }
 }
-function global:Get-ChecksumsSha ($k, $keyword) {
+function Get-ChecksumsSha ($k, $keyword) {
     $sha = $global:CHECKSUMS[$k] | ? { $_ -match $keyword } | % { $_ -split "\s" } | Select-Object -First 1
     if ($sha) {
         $sha

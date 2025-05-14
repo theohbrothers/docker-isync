@@ -1,4 +1,4 @@
-# Version 0.1.0
+# Version 0.1.1
 function Generate-DownloadBinary ($o) {
     Set-StrictMode -Version Latest
 
@@ -149,7 +149,8 @@ RUN set -eux; \
     $destinationDir = Split-Path $destination -Parent
 @"
     mkdir -pv $destinationDir; \
-    mv -v $( $o['binary'] ) $destination; \
+    BIN=`$( find . -type f -name "$( $o['binary'] )" | head -n1 ); \
+    mv -v "`$BIN" $destination; \
     chmod +x $destination; \
     $( $o['testCommand'] ); \
 

@@ -64,7 +64,8 @@ RUN set -eux; \
     echo "$SHA256  $FILE" | sha256sum -c -; \
     bzip2 -d "$FILE"; \
     mkdir -pv /usr/local/bin; \
-    mv -v restic /usr/local/bin/restic; \
+    BIN=$( find . -type f -name "restic" | head -n1 ); \
+    mv -v "$BIN" /usr/local/bin/restic; \
     chmod +x /usr/local/bin/restic; \
     restic version; \
     :
