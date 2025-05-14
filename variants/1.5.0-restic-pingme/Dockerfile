@@ -56,7 +56,8 @@ RUN set -eux; \
     echo "$SHA256  $FILE" | sha256sum -c -; \
     bzip2 -d "$FILE"; \
     mkdir -pv /usr/local/bin; \
-    mv -v restic /usr/local/bin/restic; \
+    BIN=$( find . -type f -name "restic" | head -n1 ); \
+    mv -v "$BIN" /usr/local/bin/restic; \
     chmod +x /usr/local/bin/restic; \
     restic version; \
     :
@@ -92,7 +93,8 @@ RUN set -eux; \
     tar -xvf "$FILE" --no-same-owner --no-same-permissions -- pingme LICENSE.md; \
     rm -f "$FILE"; \
     mkdir -pv /usr/local/bin; \
-    mv -v pingme /usr/local/bin/pingme; \
+    BIN=$( find . -type f -name "pingme" | head -n1 ); \
+    mv -v "$BIN" /usr/local/bin/pingme; \
     chmod +x /usr/local/bin/pingme; \
     pingme --version; \
     mkdir -p /licenses; \

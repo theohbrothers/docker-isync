@@ -57,7 +57,8 @@ RUN set -eux; \
     tar -xvf "$FILE" --no-same-owner --no-same-permissions -- pingme LICENSE.md; \
     rm -f "$FILE"; \
     mkdir -pv /usr/local/bin; \
-    mv -v pingme /usr/local/bin/pingme; \
+    BIN=$( find . -type f -name "pingme" | head -n1 ); \
+    mv -v "$BIN" /usr/local/bin/pingme; \
     chmod +x /usr/local/bin/pingme; \
     pingme --version; \
     mkdir -p /licenses; \
