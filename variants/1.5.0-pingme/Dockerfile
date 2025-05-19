@@ -54,14 +54,17 @@ RUN set -eux; \
     FILE=pingme.tar.gz; \
     wget -q "$URL" -O "$FILE"; \
     echo "$SHA256  $FILE" | sha256sum -c -; \
-    tar -xvf "$FILE" --no-same-owner --no-same-permissions -- pingme LICENSE.md; \
-    rm -f "$FILE"; \
+    mkdir -p extract; \
+    tar -C extract -xvf "$FILE" --no-same-owner --no-same-permissions -- pingme LICENSE.md; \
     mkdir -pv /usr/local/bin; \
-    mv -v pingme /usr/local/bin/pingme; \
+    BIN=$( find extract -type f -name "pingme" | head -n1 ); \
+    mv -v "$BIN" /usr/local/bin/pingme; \
     chmod +x /usr/local/bin/pingme; \
     pingme --version; \
     mkdir -p /licenses; \
-    mv -v LICENSE.md /licenses/LICENSE.md; \
+    mv -v extract/LICENSE.md /licenses/LICENSE.md; \
+    rm -rf extract; \
+    rm -f "$FILE"; \
     :
 
 # Install notification tools

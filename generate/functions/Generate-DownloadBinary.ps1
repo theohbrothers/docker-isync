@@ -1,4 +1,4 @@
-# Version 0.1.0
+# Version 0.1.1
 function Generate-DownloadBinary ($o) {
     Set-StrictMode -Version Latest
 
@@ -114,55 +114,91 @@ RUN set -eux; \
 
 "@
 
-    if ($o['archiveformat'] -match '\.tar\.gz|\.tgz') {
-        if ($o['archivefiles'].Count -gt 0) {
-@"
-    tar -xvf "`$FILE" --no-same-owner --no-same-permissions -- $( $o['archivefiles'] -join ' ' ); \
-    rm -f "`$FILE"; \
-
-"@
-        }else {
-@"
-    tar -xvf "`$FILE" --no-same-owner --no-same-permissions; \
-    rm -f "`$FILE"; \
-
-"@
-        }
-    }elseif ($o['archiveformat'] -match '\.bz2') {
-@"
-    bzip2 -d "`$FILE"; \
-
-"@
-    }elseif ($o['archiveformat'] -match '\.gz') {
-@"
-    gzip -d "`$FILE"; \
-
-"@
-    }elseif ($o['archiveformat'] -match '\.zip') {
-@"
-    unzip "`$FILE" $( $o['binary'] ); \
-
-"@
-    }
-
     $destination = if ($o.Contains('destination')) { $o['destination'] } else { "/usr/local/bin/$( $o['binary'] )" }
     $destinationDir = Split-Path $destination -Parent
+    if ($o['archiveformat'] -match '\.tar\.gz|\.tgz') {
+
 @"
+    mkdir -p extract; \
+    tar -C extract -xvf "`$FILE" --no-same-owner --no-same-permissions$( if ($o['archivefiles'].Count -gt 0) { " -- $( $o['archivefiles'] -join ' ' )" } ); \
     mkdir -pv $destinationDir; \
-    mv -v $( $o['binary'] ) $destination; \
+    BIN=`$( find extract -type f -name "$( $o['binary'] )" | head -n1 ); \
+    mv -v "`$BIN" $destination; \
     chmod +x $destination; \
     $( $o['testCommand'] ); \
 
 "@
 
-    if ($o.Contains('archivefiles')) {
-        if ($license = $o['archivefiles'] | ? { $_ -match 'LICENSE' }) {
+        if ($o.Contains('archivefiles')) {
+            if ($license = $o['archivefiles'] | ? { $_ -match 'license' }) {
 @"
     mkdir -p /licenses; \
-    mv -v $license /licenses/$license; \
+    mv -v extract/$license /licenses/$license; \
 
 "@
+            }
         }
+@"
+    rm -rf extract; \
+    rm -f "`$FILE"; \
+
+"@
+    }elseif ($o['archiveformat'] -match '\.bz2') {
+@"
+    bzip2 -d "`$FILE"; \
+    mkdir -pv $destinationDir; \
+    BIN=$( $o['binary'] ); \
+    mv -v "`$BIN" $destination; \
+    chmod +x $destination; \
+    $( $o['testCommand'] ); \
+    rm -f "`$FILE"; \
+
+"@
+    }elseif ($o['archiveformat'] -match '\.gz') {
+@"
+    gzip -d "`$FILE"; \
+    mkdir -pv $destinationDir; \
+    BIN=$( $o['binary'] ); \
+    mv -v "`$BIN" $destination; \
+    chmod +x $destination; \
+    $( $o['testCommand'] ); \
+    rm -f "`$FILE"; \
+
+"@
+    }elseif ($o['archiveformat'] -match '\.zip') {
+@"
+    unzip "`$FILE" -d extract; \
+    mkdir -pv $destinationDir; \
+    BIN=`$( find extract -type f -name "$( $o['binary'] )" | head -n1 ); \
+    mv -v "`$BIN" $destination; \
+    chmod +x $destination; \
+    $( $o['testCommand'] ); \
+
+"@
+
+        if ($o.Contains('archivefiles')) {
+            if ($license = $o['archivefiles'] | ? { $_ -match 'license' }) {
+@"
+mkdir -p /licenses; \
+mv -v extract/$license /licenses/$license; \
+
+"@
+            }
+        }
+@"
+    rm -rf extract; \
+    rm -f "`$FILE"; \
+
+"@
+    }else {
+@"
+    BIN=$( $o['binary'] ); \
+    mkdir -pv $destinationDir; \
+    mv -v "`$BIN" $destination; \
+    chmod +x $destination; \
+    $( $o['testCommand'] ); \
+
+"@
     }
 
 @"
