@@ -1,7 +1,7 @@
 {
   "pingme": {
     "versions": [
-      "0.2.6"
+      "0.2.7"
     ],
     "versionsChangeScope": "minor",
     "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/kha7iq/pingme/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | ? { [version]$_ -lt [version]'0.3.0' } | Sort-Object { [version]$_ } -Descending",
