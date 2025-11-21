@@ -65,23 +65,23 @@ RUN set -eux; \
 
 # Install pingme
 RUN set -eux; \
-    PINGME_VERSION=v0.2.6; \
+    PINGME_VERSION=v0.2.7; \
     case "$( uname -m )" in \
         'x86') \
-            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.6/pingme_Linux_x86_64.tar.gz"; \
-            SHA256=747e05242f4d1448f2bb7d5cc8903683ec75fa94fa95f2ec1704b0a880a7b9e9; \
+            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_x86_64.tar.gz"; \
+            SHA256=f956feddf4e0af7b8d5e3cc8bf1cd7ffe3f72ec7bf78d1fcde51844838f34f02; \
             ;; \
         'x86_64') \
-            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.6/pingme_Linux_x86_64.tar.gz"; \
-            SHA256=2f224389804b433318adaa5b5a4debe9974d8f17a03d2909e4c651cb723a4bed; \
+            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_x86_64.tar.gz"; \
+            SHA256=f956feddf4e0af7b8d5e3cc8bf1cd7ffe3f72ec7bf78d1fcde51844838f34f02; \
             ;; \
         'armv7l') \
-            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.6/pingme_Linux_arm.tar.gz"; \
-            SHA256=7feeac9c9a0c353da2a03f0e3eb67aab6bc4a31248c0f3c694a80f15156804d9; \
+            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_arm.tar.gz"; \
+            SHA256=facd6b1c210b8aee3ba4631aab097d9e52b2a1e946685ef3034a162234c1de35; \
             ;; \
         'aarch64') \
-            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.6/pingme_Linux_arm64.tar.gz"; \
-            SHA256=06ead384717a718366d032c11b223ec5285705623c9507a8e3432bc7e4cd6e89; \
+            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_arm64.tar.gz"; \
+            SHA256=a0e546338bb9b1881c999f508a31ee8c1da3fdac1ee376eb12df26647f51142b; \
             ;; \
         *) \
             echo "Architecture not supported"; \
