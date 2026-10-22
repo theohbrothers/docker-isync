@@ -38,6 +38,10 @@ RUN set -eux; \
             URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_amd64.bz2"; \
             SHA256=44ce3367b0b413ad48757de8e2a1f4e2c30137e7cdc77db64906f3eb7087b78f; \
             ;; \
+        'armhf') \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_arm.bz2"; \
+            SHA256=3a379eedcb90ad0ec60a24c89f9892eb7a12ddb8a28045e432fc2c43e7faa186; \
+            ;; \
         'armv7l') \
             URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_arm.bz2"; \
             SHA256=3a379eedcb90ad0ec60a24c89f9892eb7a12ddb8a28045e432fc2c43e7faa186; \
@@ -45,6 +49,18 @@ RUN set -eux; \
         'aarch64') \
             URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_arm64.bz2"; \
             SHA256=1f9d03503d8756311b7904e99aee3460f1ace427aad88f6dcba6a97a9c5a8171; \
+            ;; \
+        'ppc64le') \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_ppc64le.bz2"; \
+            SHA256=e27f8c61205a5fa71ce1d1dc4f3a79f10d58ec2fd7f05b07c26a4742beaf4edc; \
+            ;; \
+        'riscv64') \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_riscv64.bz2"; \
+            SHA256=0e95898310ad782ee54b42098c6b43b7c3e3b58a44e7f841d6533e441f011164; \
+            ;; \
+        's390x') \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_s390x.bz2"; \
+            SHA256=574aeb6cb673aa96cab6fa82656126f1ece4079edf89f68de09a3fce708ad47e; \
             ;; \
         *) \
             echo "Architecture not supported"; \
@@ -74,6 +90,10 @@ RUN set -eux; \
         'x86_64') \
             URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_x86_64.tar.gz"; \
             SHA256=f956feddf4e0af7b8d5e3cc8bf1cd7ffe3f72ec7bf78d1fcde51844838f34f02; \
+            ;; \
+        'armhf') \
+            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_arm.tar.gz"; \
+            SHA256=facd6b1c210b8aee3ba4631aab097d9e52b2a1e946685ef3034a162234c1de35; \
             ;; \
         'armv7l') \
             URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_arm.tar.gz"; \

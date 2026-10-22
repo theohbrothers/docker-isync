@@ -38,6 +38,10 @@ RUN set -eux; \
             URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_x86_64.tar.gz"; \
             SHA256=f956feddf4e0af7b8d5e3cc8bf1cd7ffe3f72ec7bf78d1fcde51844838f34f02; \
             ;; \
+        'armhf') \
+            URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_arm.tar.gz"; \
+            SHA256=facd6b1c210b8aee3ba4631aab097d9e52b2a1e946685ef3034a162234c1de35; \
+            ;; \
         'armv7l') \
             URL="https://github.com/kha7iq/pingme/releases/download/v0.2.7/pingme_Linux_arm.tar.gz"; \
             SHA256=facd6b1c210b8aee3ba4631aab097d9e52b2a1e946685ef3034a162234c1de35; \
