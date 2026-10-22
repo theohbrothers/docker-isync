@@ -1,24 +1,24 @@
-# Version 0.1.1
+# Version 0.3.0
 function Generate-DownloadBinary ($o) {
     Set-StrictMode -Version Latest
+
+    $o['binary'] = if ($o.Contains('binary')) { $o['binary'] } else { throw "binary is required" } # E.g. foo
+    $o['version'] = if ($o.Contains('version')) { $o['version'] } else { throw "version is required" } # E.g. v1.0.0
+    $o['checksumsUrl'] = if ($o.Contains('checksumsUrl')) { $o['checksumsUrl'] } else { '' } # E.g. https://github.com/namespace/project/releases/download/v1.0.0/checksums.txt"
+    $o['repository'] = if ($o.Contains('repository')) { $o['repository'] } else { '' } # E.g. namespace/project
+    $o['archiveformat'] = if ($o.Contains('archiveformat')) { $o['archiveformat'] } else { '' } # E.g. .tar.gz
+    $o['archivefiles'] = if ($o.Contains('archivefiles')) { ,$o['archivefiles'] } else { ,@() }
+    $o['platforms'] = if ($o.Contains('platforms')) { $o['platforms'] } else { 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x' }
+    $o['platformFallback'] = if ($o.Contains('platformFallback')) { $o['platformFallback'] } else { '' } # linux/amd64
+    $o['destination'] = if ($o.Contains('destination')) { $o['destination'] } else { '' } # E.g. /usr/local/bin/foo
+    $o['testCommand'] = if ($o.Contains('testCommand')) { $o['testCommand'] } else { '' } # E.g. foo --version
 
     $checksumsKey = "$( $o['binary'] )-$( $o['version'] )"
     $files = [ordered]@{}
     if ($o['checksumsUrl']) {
-        Set-Checksums $checksumsKey  $o['checksumsUrl']
+        Set-Checksums -ChecksumsUrl $o['checksumsUrl'] -ChecksumsKey $checksumsKey
     }else {
-        $release = Invoke-RestMethod "https://api.github.com/repos/$( $o['repository'] )/releases/tags/$( $o['version'] )"
-        $releaseAssetsFiles = $release.assets | ? { $_.name -match [regex]::Escape($o['binary']) -and $_.name -notmatch '\.sha\d+$' }
-        foreach ($f in $releaseAssetsFiles ) {
-            $sha = & {
-                $shaF = $release.assets | ? { $_.name -eq "$( $f.name ).sha256" -or $_ -eq "$( $f.name ).sha512" }
-                $r = Invoke-WebRequest $shaF.browser_download_url
-                $c = if ($r.headers['Content-Type'] -eq 'text/plain') { $r.Content } else { [System.Text.Encoding]::UTF8.GetString($r.Content) }
-                $c = $c.Trim() -replace '^([a-fA-F0-9]+) .+', '$1' # The checksum is the first column
-                $c
-            }
-            $files[$f.name] = $sha
-        }
+        Set-GithubReleaseFiles -Repository $o['repository'] -Tag $o['version'] -Binary $o['binary']
     }
     $shellVariable = "$( $o['binary'].ToUpper() -replace '[^A-Za-z0-9_]', '_' )_VERSION"
 @"
@@ -29,75 +29,79 @@ RUN set -eux; \
 
 "@
 
-    $o['architectures'] = if ($o.Contains('architectures')) { $o['architectures'] } else { 'linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x' }
-    foreach ($a in ($o['architectures'] -split ',') ) {
-        $split = $a -split '/'
-        $os = $split[0]  # E.g. 'linux'
-        $arch = $split[1]  # E.g. 'amd64'
-        $archv = if ($split.Count -gt 2) { $split[2] } else { '' } # E.g. 'v6' or ''
-        switch ($a) {
-            "$os/386" {
-                $hardware = 'x86'
-                $regex = "$os[-_](i?$arch|x86(_64)?)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$|(i?$arch|x86(_64)?)[-_]?$archv.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/amd64" {
-                $hardware = 'x86_64'
-                $regex = "$os[-_]($arch|x86(_64)?)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$|($arch|x86(_64)?)[-_]?$archv.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/arm/v6" {
-                $hardware = 'armhf'
-                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$|($arch|arm)[-_]?($archv)?.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/arm/v7" {
-                $hardware = 'armv7l'
-                $regex = "$os[-_]($arch|arm)[-_]?($archv)?$( [regex]::Escape($o['archiveformat']) )$|($arch|arm)[-_]?($archv)?.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/arm64" {
-                $hardware = 'aarch64'
-                $regex = "$os[-_]($arch|aarch64)[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$|($arch|aarch64)[-_]?$archv.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/ppc64le" {
-                $hardware = 'ppc64le'
-                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$|$arch[-_]?$archv.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/riscv64" {
-                $hardware = 'riscv64'
-                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$|$arch[-_]?$archv.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            "$os/s390x" {
-                $hardware = 's390x'
-                $regex = "$os[-_]$arch[-_]?$archv$( [regex]::Escape($o['archiveformat']) )$|$arch[-_]?$archv.*?[-_]$os.*?$( [regex]::Escape($o['archiveformat']) )$"
-            }
-            default {
-                throw "Unsupported architecture: $a"
-            }
+    $platforms = [ordered]@{
+        "linux/386" = [ordered]@{
+            hardware = 'x86'
+            regex = "linux[-_.](i?386|x86(_64)?)[-_.]?$( [regex]::Escape($o['archiveformat']) )$|(i?386|x86(_64)?)[-_.]?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/amd64" = [ordered]@{
+            hardware = 'x86_64'
+            regex = "linux[-_.](amd64|x86(_64)?)[-_.]?$( [regex]::Escape($o['archiveformat']) )$|(amd64|x86(_64)?)[-_.]?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/arm/v6" = [ordered]@{
+            hardware = 'armhf'
+            regex = "linux[-_.](arm)[-_.]?(v6)?$( [regex]::Escape($o['archiveformat']) )$|(arm)[-_.]?(v6)?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/arm/v7" = [ordered]@{
+            hardware = 'armv7l'
+            regex = "linux[-_.](arm)[-_.]?(v7)?$( [regex]::Escape($o['archiveformat']) )$|(arm)[-_.]?(v7)?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/arm64" = [ordered]@{
+            hardware = 'aarch64'
+            regex = "linux[-_.](arm64|aarch64)[-_.]?$( [regex]::Escape($o['archiveformat']) )$|(arm64|aarch64)[-_.]?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/ppc64le" = [ordered]@{
+            hardware = 'ppc64le'
+            regex = "linux[-_.](ppc64le)[-_.]?$( [regex]::Escape($o['archiveformat']) )$|(ppc64le)[-_.]?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/riscv64" = [ordered]@{
+            hardware = 'riscv64'
+            regex = "linux[-_.](riscv64)[-_.]?$( [regex]::Escape($o['archiveformat']) )$|(riscv64)[-_.]?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+        "linux/s390x" = [ordered]@{
+            hardware = 's390x'
+            regex = "linux[-_.](s390x)[-_.]?$( [regex]::Escape($o['archiveformat']) )$|(s390x)[-_.]?.*?[-_.]linux.*?$( [regex]::Escape($o['archiveformat']) )$"
+        }
+    }
+
+    $shaAlgoAll = ''
+    foreach ($platform in ($o['platforms'] -split ',')) {
+        $file, $sha, $shaAlgo, $downloadBaseUrl = if ($o['checksumsUrl']) {
+            Get-ChecksumsFileMeta -ChecksumsKey $checksumsKey -Regex $platforms[$platform]['regex']
+        }else {
+            Get-GithubReleaseFileMeta -ChecksumsKey $checksumsKey -Regex $platforms[$platform]['regex']
         }
 
-        $file = $sha = $url = ''
-        if ($o['checksumsUrl']) {
-            $file = Get-ChecksumsFile $checksumsKey $regex
-            $sha = Get-ChecksumsSha $checksumsKey $regex
-            $url = Split-Path $o['checksumsUrl'] -Parent
-        } else {
-            $file = $files.Keys | ? { $_ -match $regex } | Select-Object -First 1
-            if ($file) {
-                $url = "https://github.com/$( $o['repository'] )/releases/download/$( $o['version'] )"
-                $sha = $files[$file]
-            }else {
-                throw "No file matched regex: $regex"
-            }
-        }
-        if ($file -and $sha) {
+        if ($file -and $sha -and $shaAlgo -and $downloadBaseUrl) {
+            $shaAlgoAll = if ($shaAlgoAll) { $shaAlgoAll } else { $shaAlgo }
 @"
-        '$hardware') \
-            URL="$url/$file"; \
-            SHA256=$sha; \
+        '$( $platforms[$platform]['hardware'] )') \
+            URL="$downloadBaseUrl/$file"; \
+            $( $shaAlgoAll.ToUpper() )=$sha; \
             ;; \
 
 "@
         }
     }
 
+    if ($o['platformFallback']) {
+        $file, $sha, $shaAlgo, $downloadBaseUrl = if ($o['checksumsUrl']) {
+            Get-ChecksumsFileMeta -ChecksumsKey $checksumsKey -Regex $platforms[$o['platformFallback']]['regex']
+        }else {
+            Get-GithubReleaseFileMeta -ChecksumsKey $checksumsKey -Regex $platforms[$o['platformFallback']]['regex']
+        }
+
+        if ($file -and $sha -and $shaAlgo -and $downloadBaseUrl) {
+@"
+        *) \
+            URL="$downloadBaseUrl/$file"; \
+            $( $shaAlgoAll.ToUpper() )=$sha; \
+            ;; \
+    esac; \
+
+"@
+        }
+    }else {
 @"
         *) \
             echo "Architecture not supported"; \
@@ -106,21 +110,22 @@ RUN set -eux; \
     esac; \
 
 "@
+    }
 
 @"
     FILE=$( $o['binary'] )$( $o['archiveformat'] ); \
     wget -q "`$URL" -O "`$FILE"; \
-    echo "`$SHA256  `$FILE" | sha256sum -c -; \
+    echo "`$$( $shaAlgoAll.ToUpper() )  `$FILE" | $( $shaAlgoAll.ToLower() )sum -c -; \
 
 "@
 
-    $destination = if ($o.Contains('destination')) { $o['destination'] } else { "/usr/local/bin/$( $o['binary'] )" }
+    $destination = if ($o['destination']) { $o['destination'] } else { "/usr/local/bin/$( $o['binary'] )" }
     $destinationDir = Split-Path $destination -Parent
     if ($o['archiveformat'] -match '\.tar\.gz|\.tgz') {
 
 @"
     mkdir -p extract; \
-    tar -C extract -xvf "`$FILE" --no-same-owner --no-same-permissions$( if ($o['archivefiles'].Count -gt 0) { " -- $( $o['archivefiles'] -join ' ' )" } ); \
+    tar -C extract -xvf "`$FILE" --no-same-owner --no-same-permissions$( if ($o['archivefiles'].Length) { " -- $( $o['archivefiles'] -join ' ' )" } ); \
     mkdir -pv $destinationDir; \
     BIN=`$( find extract -type f -name "$( $o['binary'] )" | head -n1 ); \
     mv -v "`$BIN" $destination; \
@@ -129,7 +134,7 @@ RUN set -eux; \
 
 "@
 
-        if ($o.Contains('archivefiles')) {
+        if ($o['archivefiles'].Length) {
             if ($license = $o['archivefiles'] | ? { $_ -match 'license' }) {
 @"
     mkdir -p /licenses; \
@@ -176,7 +181,7 @@ RUN set -eux; \
 
 "@
 
-        if ($o.Contains('archivefiles')) {
+        if ($o['archivefiles'].Length) {
             if ($license = $o['archivefiles'] | ? { $_ -match 'license' }) {
 @"
 mkdir -p /licenses; \

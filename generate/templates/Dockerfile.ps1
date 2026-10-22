@@ -44,7 +44,7 @@ foreach ($c in $VARIANT['_metadata']['components']) {
                 'pingme'
                 'LICENSE.md'
             )
-            architectures = $VARIANT['_metadata']['platforms']
+            # platforms = $VARIANT['_metadata']['platforms']
             testCommand = 'pingme --version'
         }
     }
@@ -56,7 +56,7 @@ foreach ($c in $VARIANT['_metadata']['components']) {
             version = $RESTIC_VERSION
             checksumsUrl = "https://github.com/restic/restic/releases/download/$RESTIC_VERSION/SHA256SUMS"
             archiveformat = '.bz2'
-            architectures = $VARIANT['_metadata']['platforms']
+            # platforms = $VARIANT['_metadata']['platforms']
             testCommand = 'restic version'
         }
     }

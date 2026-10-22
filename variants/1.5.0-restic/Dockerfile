@@ -50,6 +50,14 @@ RUN set -eux; \
             URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_arm64.bz2"; \
             SHA256=1f9d03503d8756311b7904e99aee3460f1ace427aad88f6dcba6a97a9c5a8171; \
             ;; \
+        'ppc64le') \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_ppc64le.bz2"; \
+            SHA256=e27f8c61205a5fa71ce1d1dc4f3a79f10d58ec2fd7f05b07c26a4742beaf4edc; \
+            ;; \
+        'riscv64') \
+            URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_riscv64.bz2"; \
+            SHA256=0e95898310ad782ee54b42098c6b43b7c3e3b58a44e7f841d6533e441f011164; \
+            ;; \
         's390x') \
             URL="https://github.com/restic/restic/releases/download/v0.15.2/restic_0.15.2_linux_s390x.bz2"; \
             SHA256=574aeb6cb673aa96cab6fa82656126f1ece4079edf89f68de09a3fce708ad47e; \
