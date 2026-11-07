@@ -4,9 +4,9 @@ $global:VERSIONS = @( Get-Content $PSScriptRoot/versions.json -Encoding utf8 -ra
 $local:VARIANTS_MATRIX = @(
     @{
         package = 'isync'
-        package_version = '1.5.0'
+        package_version = '1.5.1'
         distro = 'alpine'
-        distro_version = '3.21'
+        distro_version = '3.24'
         subvariants = @(
             @{ components = @() }
             @{ components = @('pingme') }
