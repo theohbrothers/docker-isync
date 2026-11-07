@@ -9,10 +9,10 @@
   },
   "restic": {
     "versions": [
-      "0.15.2"
+      "0.19.1"
     ],
     "versionsChangeScope": "minor",
-    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/restic/restic/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | ? { [version]$_ -lt [version]'0.16.0' } | Sort-Object { [version]$_ } -Descending",
+    "versionsNewScript": "Invoke-WebRequest https://api.github.com/repos/restic/restic/git/refs/tags | ConvertFrom-Json | % { $_.ref -replace 'refs/tags/v', '' } | ? { $_ -match '^\\d+\\.\\d+\\.\\d+$' } | Sort-Object { [version]$_ } -Descending",
     "limit": 1
   }
 }
