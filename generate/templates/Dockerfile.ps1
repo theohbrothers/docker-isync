@@ -50,11 +50,11 @@ foreach ($c in $VARIANT['_metadata']['components']) {
     }
 
     if ($c -eq 'restic') {
-        $RESTIC_VERSION = "v$( $global:VERSIONS.restic.versions[0] )"
+        $RESTIC_VERSION = $global:VERSIONS.restic.versions[0]
         Generate-DownloadBinary @{
             binary = 'restic'
             version = $RESTIC_VERSION
-            checksumsUrl = "https://github.com/restic/restic/releases/download/$RESTIC_VERSION/SHA256SUMS"
+            checksumsUrl = "https://github.com/restic/restic/releases/download/v$RESTIC_VERSION/SHA256SUMS"
             archiveformat = '.bz2'
             # platforms = $VARIANT['_metadata']['platforms']
             testCommand = 'restic version'
