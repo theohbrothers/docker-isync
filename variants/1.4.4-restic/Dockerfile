@@ -28,39 +28,39 @@ RUN set -eux; \
 
 # Install restic
 RUN set -eux; \
-    RESTIC_VERSION=0.19.1; \
+    RESTIC_VERSION=0.20.0; \
     case "$( uname -m )" in \
         'x86') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_386.bz2"; \
-            SHA256=c715a3de2fffb70a4c7864ef2d195db8bad96bc0284757cd5bd0f43362f2a191; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_386.bz2"; \
+            SHA256=a23e8de316f2aa8ab2fcface8128d56c2afd24682dafb213484f87d441a28634; \
             ;; \
         'x86_64') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_amd64.bz2"; \
-            SHA256=f415415624dcc452f2a02b8c33641791a8c6d6d3b65bbb3543fcf9a25151585c; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_amd64.bz2"; \
+            SHA256=0ccd9fa7885074a24603b051e01bf9bd8b5e45d6a1791e9d9887e9e9372107f7; \
             ;; \
         'armhf') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_arm.bz2"; \
-            SHA256=1edc5f67b0dd0d028586ab28c34b4da7522eabce933b3f6cd04f9ea184c2a502; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_arm.bz2"; \
+            SHA256=34fcedbb2493ade701e166af0cef5ea3d3f5aad1b0c268c7105e1ec511b7d7e1; \
             ;; \
         'armv7l') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_arm.bz2"; \
-            SHA256=1edc5f67b0dd0d028586ab28c34b4da7522eabce933b3f6cd04f9ea184c2a502; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_arm.bz2"; \
+            SHA256=34fcedbb2493ade701e166af0cef5ea3d3f5aad1b0c268c7105e1ec511b7d7e1; \
             ;; \
         'aarch64') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_arm64.bz2"; \
-            SHA256=a5f64aaab53d51e311fa3829124c5b703f2d14cf187d8640b6be3b2b49376465; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_arm64.bz2"; \
+            SHA256=1188daded239bccb5952a01d2ad33e77a0d3dc34f9d9fc1e7fdda618d44938ef; \
             ;; \
         'ppc64le') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_ppc64le.bz2"; \
-            SHA256=6bebeb6001ad42650e17ddf10f187464dcc2e220ab3d24ade2413a74bf54735b; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_ppc64le.bz2"; \
+            SHA256=cc5c697380f66a27097f6c560ff3cf897013f89c2c8d3cf2245cab24dd64d688; \
             ;; \
         'riscv64') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_riscv64.bz2"; \
-            SHA256=fe2215a9879861139a3a02c8f5d62d1be16d29d393aa11bea652b92ea8ac52fa; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_riscv64.bz2"; \
+            SHA256=e96cebcbf4b7bcad67282d583dfde93997eefaee255b43461e0a48bde4d68714; \
             ;; \
         's390x') \
-            URL="https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_linux_s390x.bz2"; \
-            SHA256=c9398ef8cb658039b782c6d9be8f724ca9c95775ca3e232842b858d4fe6ba3b3; \
+            URL="https://github.com/restic/restic/releases/download/v0.20.0/restic_0.20.0_linux_s390x.bz2"; \
+            SHA256=885f49b0fda79cc487b9d1a53e942d35de076e3815d9371ca46b8e21695c93aa; \
             ;; \
         *) \
             echo "Architecture not supported"; \
